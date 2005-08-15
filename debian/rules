@@ -1,0 +1,163 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -g -O0
+else
+	CFLAGS += -O2
+endif
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+# For autoconf 2.13 only
+CONFFLAGS=
+ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
+	CONFFLAGS += $(DEB_HOST_GNU_TYPE)
+else
+	CONFFLAGS += --host $(DEB_BUILD_GNU_TYPE) --build $(DEB_HOST_GNU_TYPE)
+endif
+
+package := tmp
+destdir := $(PWD)/debian/$(package)
+prefix  := /usr
+share   := $(prefix)/share
+
+version := $(shell dpkg-parsechangelog | \
+		sed -ne 's/^Version: *\([0-9]\+:\)*//p')
+
+# Files from this python become content of python-cairo-dev
+PYTHON1=python2.3
+export PYTHON1
+
+PYTHON2=python2.4
+export PYTHON2
+
+
+configure-stamp:
+	dh_testdir
+
+# Copy in fresh copies of config.{sub,guess}
+# (these are from autotools-dev, so must Build-Depend on it)
+	for i in config.guess config.sub; do \
+	  if test -e /usr/share/misc/$$i ; then \
+	    if ! test -e $$i.debian-orig ; then \
+	      mv $$i $$i.debian-orig ; \
+	      cp --remove-destination /usr/share/misc/$$i $$i ; \
+	    fi ; \
+	  fi ; \
+	done
+
+# handle timestamp skew; advice from autotools-dev README.Debian
+	touch configure.ac && \
+	touch aclocal.m4 && \
+	touch config.h.in && \
+	touch configure && \
+	touch Makefile.in
+
+	touch $@
+
+
+build: configure-stamp build-stamp
+build-stamp:
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp libtool
+
+	-$(MAKE) distclean
+
+	-rm -f config.h config.cache config.status config.log
+
+	for i in config.guess config.sub; do \
+	  if test -r $$i.debian-orig ; then \
+	    mv -f $$i.debian-orig $$i; \
+	  fi; \
+	done
+
+	dh_clean
+
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	PYTHON=`which $(PYTHON1)` \
+	./configure $(CONFFLAGS) \
+		--prefix=$(prefix) \
+		--mandir=$(share)/man \
+		--infodir=$(share)/info \
+		--without-pygtk
+
+	PYTHON=`which $(PYTHON1)`; \
+	PYTHON=$$PYTHON make install DESTDIR=$(CURDIR)/debian/$(PYTHON1)-cairo pythondir=/usr/lib/$(PYTHON1)/site-packages PYTHON_INCLUDES=-I/usr/include/$(PYTHON1); \
+	find $(CURDIR)/debian/$(PYTHON1)-cairo/usr/lib \( -name "*.py[co]" -o -name "*.la" \) -exec rm -f {} \; ; \
+	mkdir -p $(CURDIR)/debian/python-cairo-dev/usr/lib
+	mv $(CURDIR)/debian/$(PYTHON1)-cairo/usr/include $(CURDIR)/debian/python-cairo-dev/usr/include
+	mv $(CURDIR)/debian/$(PYTHON1)-cairo/usr/lib/pkgconfig $(CURDIR)/debian/python-cairo-dev/usr/lib/pkgconfig
+
+	$(MAKE) clean
+
+	PYTHON=`which $(PYTHON2)` \
+	./configure $(CONFFLAGS) \
+		--prefix=$(prefix) \
+		--mandir=$(share)/man \
+		--infodir=$(share)/info \
+		--without-pygtk
+
+	PYTHON=`which $(PYTHON2)`; \
+	PYTHON=$$PYTHON make install DESTDIR=$(CURDIR)/debian/$(PYTHON2)-cairo pythondir=/usr/lib/$(PYTHON2)/site-packages PYTHON_INCLUDES=-I/usr/include/$(PYTHON2); \
+	find $(CURDIR)/debian/$(PYTHON2)-cairo/usr/lib \( -name "*.py[co]" -o -name "*.la" \) -exec rm -f {} \; ; \
+	rm -rf $(CURDIR)/debian/$(PYTHON2)-cairo/usr/include $(CURDIR)/debian/$(PYTHON2)-cairo/usr/lib/pkgconfig
+
+
+# Build architecture-independent files here. (just python-cairo-dev)
+# Pass -i to all debhelper commands in this target to reduce clutter.
+binary-indep: 
+	dh_testdir -i
+	dh_testroot -i
+	dh_installdocs -i README NEWS AUTHORS
+	dh_installexamples -i
+	dh_installchangelogs ChangeLog -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_python -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir -a
+	dh_testroot -a
+
+	dh_installdocs -A README NEWS AUTHORS
+	dh_installchangelogs ChangeLog
+	dh_installexamples
+	dh_link -a
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_python -a
+	dh_makeshlibs -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary: binary-arch binary-indep
+.PHONY: build clean binary-indep binary-arch binary install
