@@ -106,6 +106,7 @@ install: build
 	mkdir -p $(CURDIR)/debian/python-cairo-dev/usr/lib
 	mv $(CURDIR)/debian/$(PYTHON1)-cairo/usr/include $(CURDIR)/debian/python-cairo-dev/usr/include
 	mv $(CURDIR)/debian/$(PYTHON1)-cairo/usr/lib/pkgconfig $(CURDIR)/debian/python-cairo-dev/usr/lib/pkgconfig
+	cp debian/cairo.pth $(CURDIR)/debian/$(PYTHON1)-cairo/usr/lib/$(PYTHON1)/site-packages
 
 	$(MAKE) clean
 
@@ -120,6 +121,7 @@ install: build
 	PYTHON=$$PYTHON make install DESTDIR=$(CURDIR)/debian/$(PYTHON2)-cairo pythondir=/usr/lib/$(PYTHON2)/site-packages PYTHON_INCLUDES=-I/usr/include/$(PYTHON2); \
 	find $(CURDIR)/debian/$(PYTHON2)-cairo/usr/lib \( -name "*.py[co]" -o -name "*.la" \) -exec rm -f {} \; ; \
 	rm -rf $(CURDIR)/debian/$(PYTHON2)-cairo/usr/include $(CURDIR)/debian/$(PYTHON2)-cairo/usr/lib/pkgconfig
+	cp debian/cairo.pth $(CURDIR)/debian/$(PYTHON2)-cairo/usr/lib/$(PYTHON2)/site-packages
 
 
 # Build architecture-independent files here. (just python-cairo-dev)

@@ -1,3 +1,12 @@
+pycairo (0.9.0-4) unstable; urgency=low
+
+  * Rebuild against cairo 1.0.0 with updated backends (Closes: #325379)
+  * debian/control: Build-Depend on libcairo2-dev >=1.0.0
+  * Install cairo.pth to enable debian python installs to add the cairo
+    dir to the search path.
+
+ -- Dave Beckett <dajobe@debian.org>  Wed, 31 Aug 2005 00:18:51 +0100
+
 pycairo (0.9.0-3) unstable; urgency=low
 
   * First version for debian archive (Closes: #319779)
