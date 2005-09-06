@@ -3,9 +3,6 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
-/* Define to 1 if gtk+ 2.8 API is found */
-#undef HAVE_GTK28
-
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
@@ -56,15 +53,6 @@
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
-
-/* Pycairo major version */
-#undef PYCAIRO_MAJOR_VERSION
-
-/* Pycairo macro version */
-#undef PYCAIRO_MICRO_VERSION
-
-/* Pycairo minor version */
-#undef PYCAIRO_MINOR_VERSION
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS

@@ -1,1 +1,4 @@
-examples/gtk/hangman.py
+examples/gradient.py
+examples/hering.py
+examples/spiral.py
+examples/warpedtext.py
