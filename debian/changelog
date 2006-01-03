@@ -1,3 +1,10 @@
+pycairo (1.0.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Requires cairo 1.0.2
+
+ -- Dave Beckett <dajobe@debian.org>  Mon,  2 Jan 2006 16:42:30 -0800
+
 pycairo (1.0.0-1) unstable; urgency=low
 
   * New upstream release
