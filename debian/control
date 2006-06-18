@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Dave Beckett <dajobe@debian.org>
 Build-Depends: debhelper (>= 5.0.37.1), autotools-dev, pkg-config, python-all-dev (>= 2.3.5-10), python-numeric (>= 24.2-3), python-central (>= 0.4.17), libcairo2-dev (>= 1.0.2)
 XS-Python-Version: all
-Standards-Version: 3.6.2
+Standards-Version: 3.7.2.0
 
 Package: python-cairo
 Architecture: any

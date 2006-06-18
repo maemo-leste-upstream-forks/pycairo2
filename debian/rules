@@ -33,7 +33,9 @@ share   := $(prefix)/share
 version := $(shell dpkg-parsechangelog | \
 		sed -ne 's/^Version: *\([0-9]\+:\)*//p')
 
+# Python versions from constraints in XS-Python-Version in debian/control
 PYVERS	:= $(shell pyversions -vr debian/control)
+# Default python version (this what python-cairo-dev uses)
 PYDEF	:= $(shell pyversions -vd)
 
 configure-stamp:
