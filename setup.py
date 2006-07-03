@@ -33,7 +33,7 @@ _cairo = Extension(name = 'cairo._cairo',
         )
 
 setup( name = "pycairo",
-    version = "1.0.2",
+    version = "1.2.0",
     description = "python interface for cairo",
 
     packages = ['cairo'],
