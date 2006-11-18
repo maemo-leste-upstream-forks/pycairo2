@@ -1,3 +1,11 @@
+pycairo (1.2.2-1) experimental; urgency=low
+
+  * New upstream release
+  * debian/rules: Do not need dh_python while using dh_pycentral
+  * Build-Depend on cairo 1.2.2 and python-central 0.5+
+
+ -- Dave Beckett <dajobe@debian.org>  Sat, 18 Nov 2006 08:40:38 -0800
+
 pycairo (1.2.0-1) unstable; urgency=low
 
   * New upstream release

@@ -129,7 +129,6 @@ binary-indep:
 	dh_compress -i
 	dh_fixperms -i
 	dh_pycentral -i
-	dh_python -i
 	dh_installdeb -i
 	dh_gencontrol -i
 	dh_md5sums -i
@@ -148,7 +147,6 @@ binary-arch: build install
 	dh_compress -a
 	dh_fixperms -a
 	dh_pycentral -a
-	dh_python -a
 	dh_makeshlibs -a
 	dh_installdeb -a
 	dh_shlibdeps -a

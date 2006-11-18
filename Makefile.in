@@ -116,8 +116,6 @@ F77 = @F77@
 FFLAGS = @FFLAGS@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
-HAVE_LIBSVG_CAIRO_FALSE = @HAVE_LIBSVG_CAIRO_FALSE@
-HAVE_LIBSVG_CAIRO_TRUE = @HAVE_LIBSVG_CAIRO_TRUE@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -125,8 +123,6 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBSVG_CAIRO_CFLAGS = @LIBSVG_CAIRO_CFLAGS@
-LIBSVG_CAIRO_LIBS = @LIBSVG_CAIRO_LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -450,7 +446,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/. $(distdir)/cairo
+	$(mkdir_p) $(distdir)/.
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
