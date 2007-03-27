@@ -1,7 +1,49 @@
+Overview of changes from pycairo 1.2.6 to pycairo 1.4.0
+=======================================================
+General changes:
+Pycairo 1.4.0 requires cairo 1.4.0 (or later).
+
+New methods:
+    Context.clip_extents
+    Context.copy_clip_rectangles
+    Context.get_dash
+    Context.get_dash_count
+    Context.get_scaled_font
+    Context.glyph_extents
+    Context.glyph_path
+    Context.show_glyphs
+    LinearGradient.get_linear_points
+    RadialGradient.get_radial_circles
+    SolidPattern.get_rgba
+    SurfacePattern.get_surface
+
+Deleted methods:
+    ImageSurface.create_for_array
+    Remove Numeric Python support, since Numeric has been made obsolete by
+    numpy, and numpy data can be read using ImageSurface.create_for_data.
+
+Other changes:
+    the module cairo.gtk has been removed (pygtk 2.7.0 onwards has cairo
+    support built in).
+
+
+Overview of changes from pycairo 1.2.2 to pycairo 1.2.6
+=======================================================
+
+* Pycairo 1.2.6 requires cairo 1.2.6 (or later).
+
+* mingw32 compiler fixes (Cedric Gustin)
+
+* setup.py improvements  (Cedric Gustin)
+
+* ImageSurface.get_data() new method added
+  ImageSurface.get_data_as_rgba() method removed
+
+
 Overview of changes from pycairo 1.2.0 to pycairo 1.2.2
 =======================================================
 
-* Pycairo requires cairo 1.2.2 (or later)
+* Pycairo requires cairo 1.2.2 (or later).
 
 * setup.py has been updated to allow installation by executing
   $ python setup.py install

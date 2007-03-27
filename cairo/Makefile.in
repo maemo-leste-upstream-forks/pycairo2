@@ -36,7 +36,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@WITH_PYGTK_TRUE@am__append_1 = gtk.la
 subdir = cairo
 DIST_COMMON = $(pkginclude_HEADERS) $(pycairoexec_PYTHON) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -45,7 +44,7 @@ am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -65,12 +64,6 @@ am__cairo_la_OBJECTS = _cairo_la-pycairo-context.lo \
 	_cairo_la-pycairo-path.lo _cairo_la-pycairo-pattern.lo \
 	_cairo_la-pycairo-surface.lo _cairo_la-cairomodule.lo
 _cairo_la_OBJECTS = $(am__cairo_la_OBJECTS)
-@WITH_PYGTK_TRUE@gtk_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-@WITH_PYGTK_TRUE@	$(am__DEPENDENCIES_1)
-am__gtk_la_SOURCES_DIST = cairogtkmodule.c
-@WITH_PYGTK_TRUE@am_gtk_la_OBJECTS = gtk_la-cairogtkmodule.lo
-gtk_la_OBJECTS = $(am_gtk_la_OBJECTS)
-@WITH_PYGTK_TRUE@am_gtk_la_rpath = -rpath $(pycairoexecdir)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -82,8 +75,8 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(_cairo_la_SOURCES) $(gtk_la_SOURCES)
-DIST_SOURCES = $(_cairo_la_SOURCES) $(am__gtk_la_SOURCES_DIST)
+SOURCES = $(_cairo_la_SOURCES)
+DIST_SOURCES = $(_cairo_la_SOURCES)
 pycairoexecPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 pkgincludeHEADERS_INSTALL = $(INSTALL_HEADER)
@@ -123,8 +116,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
-GTK_CFLAGS = @GTK_CFLAGS@
-GTK_LIBS = @GTK_LIBS@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -155,13 +146,12 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
 VERSION_INFO = @VERSION_INFO@
-WITH_PYGTK_FALSE = @WITH_PYGTK_FALSE@
-WITH_PYGTK_TRUE = @WITH_PYGTK_TRUE@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
@@ -213,7 +203,7 @@ target_alias = @target_alias@
 pycairoexecdir = $(pyexecdir)/cairo
 pkginclude_HEADERS = pycairo.h
 pycairoexec_PYTHON = __init__.py
-pycairoexec_LTLIBRARIES = _cairo.la $(am__append_1)
+pycairoexec_LTLIBRARIES = _cairo.la
 _cairo_la_LDFLAGS = -module -avoid-version -export-symbols-regex init_cairo
 _cairo_la_LIBADD = $(CAIRO_LIBS)
 _cairo_la_CPPFLAGS = $(PYTHON_INCLUDES) $(CAIRO_CFLAGS)
@@ -227,12 +217,6 @@ _cairo_la_SOURCES = \
   pycairo-pattern.c \
   pycairo-surface.c \
   cairomodule.c
-
-@WITH_PYGTK_TRUE@gtk_la_LDFLAGS = -module -avoid-version -export-symbols-regex initgtk
-@WITH_PYGTK_TRUE@gtk_la_LIBADD = $(CAIRO_LIBS) $(GTK_LIBS)
-@WITH_PYGTK_TRUE@gtk_la_CPPFLAGS = $(PYTHON_INCLUDES) $(CAIRO_CFLAGS) $(GTK_CFLAGS)
-@WITH_PYGTK_TRUE@gtk_la_SOURCES = \
-@WITH_PYGTK_TRUE@  cairogtkmodule.c
 
 all: all-am
 
@@ -296,8 +280,6 @@ clean-pycairoexecLTLIBRARIES:
 	done
 _cairo.la: $(_cairo_la_OBJECTS) $(_cairo_la_DEPENDENCIES) 
 	$(LINK) -rpath $(pycairoexecdir) $(_cairo_la_LDFLAGS) $(_cairo_la_OBJECTS) $(_cairo_la_LIBADD) $(LIBS)
-gtk.la: $(gtk_la_OBJECTS) $(gtk_la_DEPENDENCIES) 
-	$(LINK) $(am_gtk_la_rpath) $(gtk_la_LDFLAGS) $(gtk_la_OBJECTS) $(gtk_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -312,7 +294,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/_cairo_la-pycairo-path.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/_cairo_la-pycairo-pattern.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/_cairo_la-pycairo-surface.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk_la-cairogtkmodule.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -383,13 +364,6 @@ _cairo_la-cairomodule.lo: cairomodule.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cairomodule.c' object='_cairo_la-cairomodule.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(_cairo_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o _cairo_la-cairomodule.lo `test -f 'cairomodule.c' || echo '$(srcdir)/'`cairomodule.c
-
-gtk_la-cairogtkmodule.lo: cairogtkmodule.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gtk_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT gtk_la-cairogtkmodule.lo -MD -MP -MF "$(DEPDIR)/gtk_la-cairogtkmodule.Tpo" -c -o gtk_la-cairogtkmodule.lo `test -f 'cairogtkmodule.c' || echo '$(srcdir)/'`cairogtkmodule.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/gtk_la-cairogtkmodule.Tpo" "$(DEPDIR)/gtk_la-cairogtkmodule.Plo"; else rm -f "$(DEPDIR)/gtk_la-cairogtkmodule.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cairogtkmodule.c' object='gtk_la-cairogtkmodule.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gtk_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gtk_la-cairogtkmodule.lo `test -f 'cairogtkmodule.c' || echo '$(srcdir)/'`cairogtkmodule.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

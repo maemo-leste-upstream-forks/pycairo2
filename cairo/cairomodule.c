@@ -28,6 +28,7 @@
  * the specific language governing rights and limitations.
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #ifdef HAVE_CONFIG_H
@@ -36,9 +37,9 @@
 #include "pycairo-private.h"
 
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 2
-#define VERSION_MICRO 2
-static char pycairo_version_string[] = "1.2.2";
+#define VERSION_MINOR 4
+#define VERSION_MICRO 0
+static char pycairo_version_string[] = "1.4.0";
 
 
 /* A module specific exception */
@@ -169,6 +170,7 @@ init_cairo(void)
     PycairoPath_Type.tp_base = &PyBaseObject_Type;
     if (PyType_Ready(&PycairoPath_Type) < 0)
 	return;
+    PycairoPathiter_Type.tp_iter=&PyObject_SelfIter;
 
     PycairoPattern_Type.tp_base = &PyBaseObject_Type;
     if (PyType_Ready(&PycairoPattern_Type) < 0)
