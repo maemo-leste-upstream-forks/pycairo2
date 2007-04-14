@@ -26,7 +26,6 @@ else
 endif
 
 package := tmp
-destdir := $(PWD)/debian/$(package)
 prefix  := /usr
 share   := $(prefix)/share
 
@@ -44,10 +43,10 @@ configure-stamp:
 # Copy in fresh copies of config.{sub,guess}
 # (these are from autotools-dev, so must Build-Depend on it)
 	for i in config.guess config.sub; do \
-	  if test -e /usr/share/misc/$$i ; then \
+	  if test -e $(share)/misc/$$i ; then \
 	    if ! test -e $$i.debian-orig ; then \
 	      mv $$i $$i.debian-orig ; \
-	      cp --remove-destination /usr/share/misc/$$i $$i ; \
+	      cp --remove-destination $(share)/misc/$$i $$i ; \
 	    fi ; \
 	  fi ; \
 	done
