@@ -60,17 +60,47 @@ configure-stamp:
 
 	touch $@
 
+build-%/configure-stamp: configure-stamp
+	dh_testdir
+	mkdir -p build-$*
+	cd build-$* && PYTHON=/usr/bin/python$* ../configure $(CONFFLAGS) \
+		--prefix=$(prefix) \
+		--mandir=$(share)/man \
+		--infodir=$(share)/info \
+		--without-pygtk
+	touch $@
+
+dbg-build-%/configure-stamp: configure-stamp
+	dh_testdir
+	mkdir -p dbg-build-$*
+	cd dbg-build-$* && CFLAGS="$(CFLAGS) -O0" PYTHON=/usr/bin/python$*-dbg ../configure $(CONFFLAGS) \
+		--prefix=$(prefix) \
+		--mandir=$(share)/man \
+		--infodir=$(share)/info \
+		--without-pygtk
+	touch $@
 
 build: configure-stamp build-stamp
-build-stamp:
+build-stamp: $(PYVERS:%=build-%/build-stamp) $(PYVERS:%=dbg-build-%/build-stamp)
 	touch build-stamp
+
+build-%/build-stamp: build-%/configure-stamp
+	dh_testdir
+	make -C build-$*
+	touch $@
+
+dbg-build-%/build-stamp: dbg-build-%/configure-stamp
+	dh_testdir
+	make -C dbg-build-$*
+	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp libtool
+	rm -rf build-* dbg-build-*
 
-	-$(MAKE) distclean
+	[ ! -f Makefile ] || $(MAKE) distclean
 
 	-rm -f config.h config.cache config.status config.log
 
@@ -83,27 +113,27 @@ clean:
 	dh_clean
 
 
-install: build
+install-pre:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	$(MAKE) -f debian/rules $(PYVERS:%=install-python%)
 
-install-python%:
-	PYTHON=`which python$*` \
-	./configure $(CONFFLAGS) \
-		--prefix=$(prefix) \
-		--mandir=$(share)/man \
-		--infodir=$(share)/info \
-		--without-pygtk
+install: install-pre $(PYVERS:%=install-%) $(PYVERS:%=dbg-install-%)
+	for i in $$(find debian/python-cairo-dbg -name '*.so'); do \
+	  b=$$(basename $$i .so); \
+	  mv $$i $$(dirname $$i)/$${b}_d.so; \
+	done
+	find debian/python-cairo-dbg ! -type d ! -name '*.so' | xargs rm -f
+	-find debian/python-cairo-dbg -depth -empty -exec rmdir {} \;
 
-	PYTHON=`which python$*`; \
-	PYTHON=$$PYTHON make install \
-		DESTDIR=$(CURDIR)/debian/python-cairo \
-		pythondir=/usr/lib/python$*/site-packages \
-		PYTHON_INCLUDES=-I/usr/include/python$*
-	find debian/python-cairo/usr/lib \( -name "*.py[co]" -o -name "*.la" \) -exec rm -f {} \;
+install-%: build-%/build-stamp
+	dh_testdir
+	dh_testroot
+	make -C build-$* install \
+		DESTDIR=$(CURDIR)/debian/python-cairo
+	find debian/python-cairo/usr/lib \
+		\( -name "*.py[co]" -o -name "*.la" \) -exec rm -f {} \;
 
 	if [ $* = $(PYDEF) ]; then \
 	  mkdir -p debian/python-cairo-dev/usr/lib; \
@@ -111,10 +141,13 @@ install-python%:
 	  mv debian/python-cairo/usr/lib/pkgconfig debian/python-cairo-dev/usr/lib/pkgconfig; \
 	fi
 	rm -rf debian/python-cairo/usr/include debian/python-cairo/usr/lib/pkgconfig
-	cp debian/cairo.pth $(CURDIR)/debian/python-cairo/usr/lib/python$*/site-packages
+#	cp debian/cairo.pth $(CURDIR)/debian/python-cairo/usr/lib/python$*/site-packages
 
-	$(MAKE) clean
-
+dbg-install-%: dbg-build-%/build-stamp
+	dh_testdir
+	dh_testroot
+	make -C dbg-build-$* install \
+		DESTDIR=$(CURDIR)/debian/python-cairo-dbg
 
 # Build architecture-independent files here. (just python-cairo-dev)
 # Pass -i to all debhelper commands in this target to reduce clutter.
@@ -142,7 +175,9 @@ binary-arch: build install
 	dh_installchangelogs ChangeLog
 	dh_installexamples
 	dh_link -a
-	dh_strip -a
+	dh_strip -ppython-cairo --dbg-package=python-cairo-dbg
+	rm -rf debian/python-cairo-dbg/usr/share/doc/python-cairo-dbg
+	ln -s python-cairo debian/python-cairo-dbg/usr/share/doc/python-cairo-dbg
 	dh_compress -a
 	dh_fixperms -a
 	dh_pycentral -a

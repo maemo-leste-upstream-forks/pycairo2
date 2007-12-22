@@ -2,9 +2,10 @@ Source: pycairo
 Section: python
 Priority: optional
 Maintainer: Dave Beckett <dajobe@debian.org>
-Build-Depends: debhelper (>= 5.0.37.1), autotools-dev, pkg-config, python-all-dev (>= 2.3.5-10), python-central (>= 0.5), libcairo2-dev (>= 1.4.0)
+Build-Depends: debhelper (>= 5.0.37.1), autotools-dev, pkg-config, python-all-dev (>= 2.4.0), python-all-dbg (>= 2.4.0), python-central (>= 0.5), libcairo2-dev (>= 1.4.12)
 XS-Python-Version: all
-Standards-Version: 3.7.2.0
+Standards-Version: 3.7.3
+Homepage: http://cairographics.org/pycairo/
 
 Package: python-cairo
 Architecture: any
@@ -17,9 +18,19 @@ Description: Python bindings for the Cairo vector graphics library
  This package contains modules that allow you to use the cairo vector
  graphics library in Python programs.
 
+Package: python-cairo-dbg
+Priority: extra
+Architecture: any
+Depends: python-cairo (= ${binary:Version}), python-dbg, ${shlibs:Depends}
+Description: Python bindings for the Cairo vector graphics library (debug extension)
+ This package contains modules that allow you to use the cairo vector
+ graphics library in Python programs.
+ .
+ This package contains the extension built for the python debug interpreter.
+
 Package: python-cairo-dev
 Architecture: all
-Depends: ${python:Depends}, python-cairo (>= ${Source-Version})
+Depends: ${python:Depends}, python-cairo (>= ${binary:Version})
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).
