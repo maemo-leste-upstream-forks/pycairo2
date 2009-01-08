@@ -2,7 +2,7 @@
  *
  * Pycairo - Python bindings for cairo
  *
- * Copyright © 2003-2005 James Henstridge
+ * Copyright © 2003 James Henstridge, Steven Chaplin
  *
  * This library is free software; you can redistribute it and/or
  * modify it either under the terms of the GNU Lesser General Public
@@ -70,7 +70,8 @@ extern PyTypeObject PycairoSurfacePattern_Type;
 extern PyTypeObject PycairoGradient_Type;
 extern PyTypeObject PycairoLinearGradient_Type;
 extern PyTypeObject PycairoRadialGradient_Type;
-PyObject *PycairoPattern_FromPattern (cairo_pattern_t *pattern);
+PyObject *PycairoPattern_FromPattern (cairo_pattern_t *pattern,
+				      PyObject *base);
 
 extern PyTypeObject PycairoScaledFont_Type;
 PyObject *PycairoScaledFont_FromScaledFont (cairo_scaled_font_t *scaled_font);
@@ -102,20 +103,6 @@ PyObject *PycairoSurface_FromSurface (cairo_surface_t *surface,
                                       PyObject *base);
 
 int Pycairo_Check_Status (cairo_status_t status);
-
-/* Python 2.5 compatibility */
-#if PY_VERSION_HEX < 0x02050000 && !defined(PY_SSIZE_T_MIN)
-typedef int Py_ssize_t;
-#define PY_SSIZE_T_MAX INT_MAX
-#define PY_SSIZE_T_MIN INT_MIN
-typedef inquiry lenfunc;
-typedef intargfunc ssizeargfunc;
-typedef intobjargproc ssizeobjargproc;
-typedef getreadbufferproc readbufferproc;
-typedef getwritebufferproc writebufferproc;
-typedef getsegcountproc segcountproc;
-typedef getcharbufferproc charbufferproc;
-#endif
 
 /* error checking macros */
 #define RETURN_NULL_IF_CAIRO_ERROR(status)    \

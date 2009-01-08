@@ -1,11 +1,21 @@
-pycairo (1.4.12-1.2) unstable; urgency=low
+pycairo (1.8.2-1) experimental; urgency=low
 
-  * Non-maintainer upload.
-  * Python 2.5 compatibility of Image buffer interface.
-    (needed e.g. for interaction with python-pygame).
-    Closes: #481506
+  * New upstream release, uploaded to experimental
+  * Adopted by the Debian Python Modules Team, thanks to Dave Beckett
+    for maintenance so far
+  * debian/control
+    - Bumped standards version to 3.8.0, no changes necessary
+    - Changed XS-Python-Version to only build the package for Python 2.5
+    - Updated build dependencies according to Python Policy recommendations
+    - Removed old Replace/Conflicts, there are no 2.3 or 2.4 packages anymore
+    - Set DPMT as maintainers
+    - Added Dave Beckett and myself as uploaders
+    - Update build dependency on libcairo2-dev to latest version 1.8.6
+  * debian/rules
+    - Removed unused variables
+    - Removed --without-pygtk option from configure, option has vanished
 
- -- Thomas Viehmann <tv@beamnet.de>  Tue, 13 Jan 2009 22:51:49 +0100
+ -- Torsten Marek <shlomme@debian.org>  Thu, 08 Jan 2009 12:29:52 +0100
 
 pycairo (1.4.12-1.1) unstable; urgency=low
 
