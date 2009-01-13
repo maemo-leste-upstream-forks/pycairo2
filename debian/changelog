@@ -1,3 +1,12 @@
+pycairo (1.4.12-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Python 2.5 compatibility of Image buffer interface.
+    (needed e.g. for interaction with python-pygame).
+    Closes: #481506
+
+ -- Thomas Viehmann <tv@beamnet.de>  Tue, 13 Jan 2009 22:51:49 +0100
+
 pycairo (1.4.12-1.1) unstable; urgency=low
 
   * NMU.
