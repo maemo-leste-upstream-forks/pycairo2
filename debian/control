@@ -25,7 +25,7 @@ Description: Python bindings for the Cairo vector graphics library (debug extens
  This package contains modules that allow you to use the cairo vector
  graphics library in Python programs.
  .
- This package contains the extension built for the python debug interpreter.
+ This package contains the extension built for the Python debug interpreter.
 
 Package: python-cairo-dev
 Architecture: all
