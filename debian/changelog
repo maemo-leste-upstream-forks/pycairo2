@@ -1,4 +1,4 @@
-pycairo (1.8.0-1) experimental; urgency=low
+pycairo (1.8.2-1) experimental; urgency=low
 
   * New upstream release, uploaded to experimental
   * Adopted by the Debian Python Modules Team, thanks to Dave Beckett
