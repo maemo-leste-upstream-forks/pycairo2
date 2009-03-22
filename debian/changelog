@@ -1,3 +1,21 @@
+pycairo (1.8.4-1) unstable; urgency=low
+
+  * New upstream release for unstable (Closes: #497055)
+  * debian/rules
+    - Switch to cdbs and python-support
+  * debian/control
+    - Bumped standards version to 3.8.1, no changes necessary
+    - Bumped debhelper compatibility level to 7, no changes
+    - Switch to cdbs and python-support
+    - Build-depend on dpatch
+    - Added ${misc:Depends} to all packages, fixes lintian warnings
+  * debian/patches/01_no_py26_dependency.dpatch
+    - do not require Python 2.6
+  * debian/patches/02_toyfontface_type_base.dpatch
+    - set correct base type for ToyFontFace
+
+ -- Torsten Marek <shlomme@debian.org>  Sun, 22 Mar 2009 13:37:43 +0100
+
 pycairo (1.8.2-1) experimental; urgency=low
 
   * New upstream release, uploaded to experimental
