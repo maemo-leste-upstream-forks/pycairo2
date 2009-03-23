@@ -3,14 +3,13 @@ Section: python
 Priority: optional
 Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Uploaders: Dave Beckett <dajobe@debian.org>, Torsten Marek <shlomme@debian.org>
-Build-Depends: debhelper (>= 5.0.38), autotools-dev, pkg-config, python-all-dev (>= 2.4.0), python-all-dbg (>= 2.4.0), python-central (>= 0.5.6), libcairo2-dev (>= 1.8.6)
-XS-Python-Version: >= 2.5
-Standards-Version: 3.8.0
+Build-Depends: debhelper (>= 7), cdbs (>= 0.4.49), python-all-dev (>= 2.4.0), python-all-dbg (>= 2.4.0), python-support (>= 0.8.7), libcairo2-dev (>= 1.8.6), dpatch, patchutils
+Standards-Version: 3.8.1
 Homepage: http://cairographics.org/pycairo/
 
 Package: python-cairo
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}
+Depends: ${shlibs:Depends}, ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: Python bindings for the Cairo vector graphics library
@@ -20,7 +19,9 @@ Description: Python bindings for the Cairo vector graphics library
 Package: python-cairo-dbg
 Priority: extra
 Architecture: any
-Depends: python-cairo (= ${binary:Version}), python-dbg, ${shlibs:Depends}
+Depends: python-cairo (= ${binary:Version}), python-dbg, ${shlibs:Depends}, ${misc:Depends}
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
 Description: Python bindings for the Cairo vector graphics library (debug extension)
  This package contains modules that allow you to use the cairo vector
  graphics library in Python programs.
@@ -29,7 +30,7 @@ Description: Python bindings for the Cairo vector graphics library (debug extens
 
 Package: python-cairo-dev
 Architecture: all
-Depends: ${python:Depends}, python-cairo (>= ${binary:Version})
+Depends: python-cairo (>= ${binary:Version}), ${misc:Depends}
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).
