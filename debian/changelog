@@ -1,3 +1,11 @@
+pycairo (1.8.4-2) unstable; urgency=low
+
+  * debian/preinst
+    - Remove files remaining from python-central if
+      /var/lib/pycentral/pkgremove did not exist before (Closes: #516518)
+
+ -- Torsten Marek <shlomme@debian.org>  Fri, 27 Mar 2009 13:49:34 +0100
+
 pycairo (1.8.4-1) unstable; urgency=low
 
   * New upstream release for unstable (Closes: #497055)
