@@ -1,3 +1,10 @@
+pycairo (1.8.4-3) unstable; urgency=low
+
+  * debian/python-cairo.preinst
+    - Run cleanup only on upgrade, thanks Julien Valroff (Closes: #521564)
+
+ -- Torsten Marek <shlomme@debian.org>  Sat, 28 Mar 2009 18:45:18 +0100
+
 pycairo (1.8.4-2) unstable; urgency=low
 
   * debian/preinst
