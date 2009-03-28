@@ -5,7 +5,7 @@
 PYCENTRAL=/usr/bin/pycentral
 
 case "$1" in
-    install|upgrade)
+    upgrade)
         if dpkg --compare-versions "$2" lt 1.8.4-2; then
             if [ -x $PYCENTRAL ]; then
                 # explicitly remove old python-central files
