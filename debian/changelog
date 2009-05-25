@@ -5,6 +5,7 @@ pycairo (1.8.4-3exp1) experimental; urgency=low
     - make sure debug build files are cleaned correctly
   * debian/control
     - set build dependency on python-all-{dev,dbg} to 2.5.4-1~
+    - change section of python-cairo-dbg to debug
 
  -- Torsten Marek <shlomme@debian.org>  Mon, 25 May 2009 21:12:55 +0200
 
