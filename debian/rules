@@ -22,7 +22,7 @@ install/python-cairo-dbg::
 
 # pycairo.pc is created automatically by setup.py, remove before .diff.gz is created
 clean::
-	for i in $(cdbs_python_build_versions); do \
+	-for i in $(cdbs_python_build_versions); do \
 	  python$$i-dbg ./setup.py clean -a; \
 	done
 	rm -f $(CURDIR)/pycairo.pc
