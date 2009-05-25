@@ -1,3 +1,11 @@
+pycairo (1.8.4-3exp2) experimental; urgency=low
+
+  * Actually build Python 2.6 modules
+    - somehow, using an unstable basetgz in pbuilder won't
+      magically do just what I want
+
+ -- Torsten Marek <shlomme@debian.org>  Mon, 25 May 2009 22:13:11 +0200
+
 pycairo (1.8.4-3exp1) experimental; urgency=low
 
   * Added module for Python 2.6, for experimental
