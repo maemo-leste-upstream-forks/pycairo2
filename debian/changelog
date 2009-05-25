@@ -1,3 +1,13 @@
+pycairo (1.8.4-3exp1) experimental; urgency=low
+
+  * Added module for Python 2.6, for experimental
+  * debian/rules
+    - make sure debug build files are cleaned correctly
+  * debian/control
+    - set build dependency on python-all-{dev,dbg} to 2.5.4-1~
+
+ -- Torsten Marek <shlomme@debian.org>  Mon, 25 May 2009 21:12:55 +0200
+
 pycairo (1.8.4-3) unstable; urgency=low
 
   * debian/python-cairo.preinst
