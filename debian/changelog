@@ -1,3 +1,11 @@
+pycairo (1.8.6-1) unstable; urgency=low
+
+  * New upstream release
+  * debian/patches/02__toyfontface_type_base.dpatch
+    - Removed, fixed upstream.
+
+ -- Torsten Marek <shlomme@debian.org>  Fri, 17 Jul 2009 22:50:31 +0200
+
 pycairo (1.8.4-3exp2) experimental; urgency=low
 
   * Actually build Python 2.6 modules
