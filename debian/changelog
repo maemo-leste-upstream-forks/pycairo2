@@ -1,6 +1,8 @@
 pycairo (1.8.6-1) unstable; urgency=low
 
   * New upstream release
+  * debian/control
+    - Bumped standards version to 3.8.2, no changes necessary.
   * debian/patches/02__toyfontface_type_base.dpatch
     - Removed, fixed upstream.
 
