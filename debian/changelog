@@ -3,8 +3,14 @@ pycairo (1.8.6-1) unstable; urgency=low
   * New upstream release
   * debian/control
     - Bumped standards version to 3.8.2, no changes necessary.
+    - Added build-dependency on python-sphinx.
+    - Added dependency on libjs-jquery.
   * debian/patches/02__toyfontface_type_base.dpatch
     - Removed, fixed upstream.
+  * debian/rules
+    - Build documentation.
+  * debian/python-cairo-dev.docs, debian/python-cairo-dev.links
+    - Install the documentation
 
  -- Torsten Marek <shlomme@debian.org>  Fri, 17 Jul 2009 22:50:31 +0200
 
