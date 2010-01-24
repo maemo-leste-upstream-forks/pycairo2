@@ -1,4 +1,4 @@
-pycairo (1.8.8-1) UNRELEASED; urgency=low
+pycairo (1.8.8-1) unstable; urgency=low
 
   [ Loïc Minier ]
   * Use *-packages instead of site-packages in debian/python-cairo-dbg.install
