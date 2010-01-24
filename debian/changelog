@@ -7,13 +7,15 @@ pycairo (1.8.8-1) UNRELEASED; urgency=low
   [ Torsten Marek ]
   * New upstream release
   * Convert to new source format "3.0 (quilt)"
+  * debian/control
+    - Updated standards version to 3.8.3, no changes necessary
   * debian/patches/setup_25_compat
     - Ensure Python 2.5 compatibility
     - Make sure __init__.py is installed
   * debian/rules
     - Remove old dpatch workarounds
 
- -- Torsten Marek <shlomme@debian.org>  Sun, 24 Jan 2010 15:33:13 +0100
+ -- Torsten Marek <shlomme@debian.org>  Sun, 24 Jan 2010 15:39:31 +0100
 
 pycairo (1.8.6-1) unstable; urgency=low
 
