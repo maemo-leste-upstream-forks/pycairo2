@@ -22,13 +22,9 @@ install/python-cairo-dbg::
 	  python$$i-dbg ./setup.py install --install-layout=deb --root $(CURDIR)/debian/tmp; \
 	done
 
-# pycairo.pc is created automatically by setup.py, remove before .diff.gz is created
 clean::
 	-for i in $(cdbs_python_build_versions); do \
 	  python$$i-dbg ./setup.py clean -a; \
 	done
 	rm -f $(CURDIR)/pycairo.pc
-
-# this has to be include after our clean calls since setup.py needs to be patched
-# in order to run
-include /usr/share/cdbs/1/rules/dpatch.mk
+	rm -rf $(CURDIR)/build
