@@ -7,12 +7,6 @@ include /usr/share/cdbs/1/class/python-distutils.mk
 
 DEB_PYTHON_INSTALL_ARGS_ALL += --install-layout=deb
 
-build/python-cairo::
-       set -e; \
-       for i in $(cdbs_python_build_versions); do \
-         python$$i ./setup.py build; \
-       done
-
 install/python-cairo-dev::
 	python setup.py install_data --install-dir=$(CURDIR)/debian/tmp/usr
 	sphinx-build -bhtml doc build/html
