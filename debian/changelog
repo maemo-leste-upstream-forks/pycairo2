@@ -1,3 +1,9 @@
+pycairo (1.8.8-2) UNRELEASED; urgency=low
+
+  * Add Vcs-* fields.
+
+ -- Jakub Wilk <jwilk@debian.org>  Sat, 10 Sep 2011 00:08:40 +0200
+
 pycairo (1.8.8-1) unstable; urgency=low
 
   [ Loïc Minier ]
