@@ -1,8 +1,9 @@
 pycairo (1.8.8-2) UNRELEASED; urgency=low
 
   * Add Vcs-* fields.
+  * Use canonical URIs for Vcs-* fields.
 
- -- Jakub Wilk <jwilk@debian.org>  Sat, 10 Sep 2011 00:08:40 +0200
+ -- Jakub Wilk <jwilk@debian.org>  Sun, 05 May 2013 16:01:36 +0200
 
 pycairo (1.8.8-1) unstable; urgency=low
 
