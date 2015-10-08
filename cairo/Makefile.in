@@ -36,11 +36,10 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_LIBSVG_CAIRO_TRUE@am__append_1 = svg.la
-@WITH_PYGTK_TRUE@am__append_2 = gtk.la
+@WITH_PYGTK_TRUE@am__append_1 = gtk.la
 subdir = cairo
-DIST_COMMON = $(pkginclude_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/__init__.py.in
+DIST_COMMON = $(pkginclude_HEADERS) $(pycairoexec_PYTHON) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/configure.ac
@@ -48,7 +47,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = __init__.py
+CONFIG_CLEAN_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -72,12 +71,6 @@ am__gtk_la_SOURCES_DIST = cairogtkmodule.c
 @WITH_PYGTK_TRUE@am_gtk_la_OBJECTS = gtk_la-cairogtkmodule.lo
 gtk_la_OBJECTS = $(am_gtk_la_OBJECTS)
 @WITH_PYGTK_TRUE@am_gtk_la_rpath = -rpath $(pycairoexecdir)
-@HAVE_LIBSVG_CAIRO_TRUE@svg_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am__svg_la_SOURCES_DIST = pycairosvg.h pycairosvg-private.h \
-	cairosvgmodule.c
-@HAVE_LIBSVG_CAIRO_TRUE@am_svg_la_OBJECTS = svg_la-cairosvgmodule.lo
-svg_la_OBJECTS = $(am_svg_la_OBJECTS)
-@HAVE_LIBSVG_CAIRO_TRUE@am_svg_la_rpath = -rpath $(pycairoexecdir)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -89,10 +82,9 @@ LTCOMPILE = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) \
 CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(_cairo_la_SOURCES) $(gtk_la_SOURCES) $(svg_la_SOURCES)
-DIST_SOURCES = $(_cairo_la_SOURCES) $(am__gtk_la_SOURCES_DIST) \
-	$(am__svg_la_SOURCES_DIST)
-nodist_pycairoexecPYTHON_INSTALL = $(INSTALL_DATA)
+SOURCES = $(_cairo_la_SOURCES) $(gtk_la_SOURCES)
+DIST_SOURCES = $(_cairo_la_SOURCES) $(am__gtk_la_SOURCES_DIST)
+pycairoexecPYTHON_INSTALL = $(INSTALL_DATA)
 py_compile = $(top_srcdir)/py-compile
 pkgincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(pkginclude_HEADERS)
@@ -133,8 +125,6 @@ F77 = @F77@
 FFLAGS = @FFLAGS@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
-HAVE_LIBSVG_CAIRO_FALSE = @HAVE_LIBSVG_CAIRO_FALSE@
-HAVE_LIBSVG_CAIRO_TRUE = @HAVE_LIBSVG_CAIRO_TRUE@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -142,8 +132,6 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LIBSVG_CAIRO_CFLAGS = @LIBSVG_CAIRO_CFLAGS@
-LIBSVG_CAIRO_LIBS = @LIBSVG_CAIRO_LIBS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -224,8 +212,8 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 pycairoexecdir = $(pyexecdir)/cairo
 pkginclude_HEADERS = pycairo.h
-nodist_pycairoexec_PYTHON = __init__.py
-pycairoexec_LTLIBRARIES = _cairo.la $(am__append_1) $(am__append_2)
+pycairoexec_PYTHON = __init__.py
+pycairoexec_LTLIBRARIES = _cairo.la $(am__append_1)
 _cairo_la_LDFLAGS = -module -avoid-version -export-symbols-regex init_cairo
 _cairo_la_LIBADD = $(CAIRO_LIBS)
 _cairo_la_CPPFLAGS = $(PYTHON_INCLUDES) $(CAIRO_CFLAGS)
@@ -239,14 +227,6 @@ _cairo_la_SOURCES = \
   pycairo-pattern.c \
   pycairo-surface.c \
   cairomodule.c
-
-@HAVE_LIBSVG_CAIRO_TRUE@svg_la_LDFLAGS = -module -avoid-version -export-symbols-regex initsvg
-@HAVE_LIBSVG_CAIRO_TRUE@svg_la_LIBADD = $(LIBSVG_CAIRO_LIBS)
-@HAVE_LIBSVG_CAIRO_TRUE@svg_la_CPPFLAGS = $(PYTHON_INCLUDES) $(LIBSVG_CAIRO_CFLAGS)
-@HAVE_LIBSVG_CAIRO_TRUE@svg_la_SOURCES = \
-@HAVE_LIBSVG_CAIRO_TRUE@  pycairosvg.h \
-@HAVE_LIBSVG_CAIRO_TRUE@  pycairosvg-private.h \
-@HAVE_LIBSVG_CAIRO_TRUE@  cairosvgmodule.c
 
 @WITH_PYGTK_TRUE@gtk_la_LDFLAGS = -module -avoid-version -export-symbols-regex initgtk
 @WITH_PYGTK_TRUE@gtk_la_LIBADD = $(CAIRO_LIBS) $(GTK_LIBS)
@@ -287,8 +267,6 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-__init__.py: $(top_builddir)/config.status $(srcdir)/__init__.py.in
-	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-pycairoexecLTLIBRARIES: $(pycairoexec_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	test -z "$(pycairoexecdir)" || $(mkdir_p) "$(DESTDIR)$(pycairoexecdir)"
@@ -320,8 +298,6 @@ _cairo.la: $(_cairo_la_OBJECTS) $(_cairo_la_DEPENDENCIES)
 	$(LINK) -rpath $(pycairoexecdir) $(_cairo_la_LDFLAGS) $(_cairo_la_OBJECTS) $(_cairo_la_LIBADD) $(LIBS)
 gtk.la: $(gtk_la_OBJECTS) $(gtk_la_DEPENDENCIES) 
 	$(LINK) $(am_gtk_la_rpath) $(gtk_la_LDFLAGS) $(gtk_la_OBJECTS) $(gtk_la_LIBADD) $(LIBS)
-svg.la: $(svg_la_OBJECTS) $(svg_la_DEPENDENCIES) 
-	$(LINK) $(am_svg_la_rpath) $(svg_la_LDFLAGS) $(svg_la_OBJECTS) $(svg_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -337,7 +313,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/_cairo_la-pycairo-pattern.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/_cairo_la-pycairo-surface.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtk_la-cairogtkmodule.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/svg_la-cairosvgmodule.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -416,13 +391,6 @@ gtk_la-cairogtkmodule.lo: cairogtkmodule.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(gtk_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o gtk_la-cairogtkmodule.lo `test -f 'cairogtkmodule.c' || echo '$(srcdir)/'`cairogtkmodule.c
 
-svg_la-cairosvgmodule.lo: cairosvgmodule.c
-@am__fastdepCC_TRUE@	if $(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(svg_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT svg_la-cairosvgmodule.lo -MD -MP -MF "$(DEPDIR)/svg_la-cairosvgmodule.Tpo" -c -o svg_la-cairosvgmodule.lo `test -f 'cairosvgmodule.c' || echo '$(srcdir)/'`cairosvgmodule.c; \
-@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/svg_la-cairosvgmodule.Tpo" "$(DEPDIR)/svg_la-cairosvgmodule.Plo"; else rm -f "$(DEPDIR)/svg_la-cairosvgmodule.Tpo"; exit 1; fi
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='cairosvgmodule.c' object='svg_la-cairosvgmodule.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) --tag=CC --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(svg_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o svg_la-cairosvgmodule.lo `test -f 'cairosvgmodule.c' || echo '$(srcdir)/'`cairosvgmodule.c
-
 mostlyclean-libtool:
 	-rm -f *.lo
 
@@ -432,16 +400,16 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-install-nodist_pycairoexecPYTHON: $(nodist_pycairoexec_PYTHON)
+install-pycairoexecPYTHON: $(pycairoexec_PYTHON)
 	@$(NORMAL_INSTALL)
 	test -z "$(pycairoexecdir)" || $(mkdir_p) "$(DESTDIR)$(pycairoexecdir)"
-	@list='$(nodist_pycairoexec_PYTHON)'; dlist=''; for p in $$list; do\
+	@list='$(pycairoexec_PYTHON)'; dlist=''; for p in $$list; do\
 	  if test -f "$$p"; then b=; else b="$(srcdir)/"; fi; \
 	  if test -f $$b$$p; then \
 	    f=$(am__strip_dir) \
 	    dlist="$$dlist $$f"; \
-	    echo " $(nodist_pycairoexecPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(pycairoexecdir)/$$f'"; \
-	    $(nodist_pycairoexecPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(pycairoexecdir)/$$f"; \
+	    echo " $(pycairoexecPYTHON_INSTALL) '$$b$$p' '$(DESTDIR)$(pycairoexecdir)/$$f'"; \
+	    $(pycairoexecPYTHON_INSTALL) "$$b$$p" "$(DESTDIR)$(pycairoexecdir)/$$f"; \
 	  else :; fi; \
 	done; \
 	if test -n "$$dlist"; then \
@@ -452,9 +420,9 @@ install-nodist_pycairoexecPYTHON: $(nodist_pycairoexec_PYTHON)
 	  fi; \
 	else :; fi
 
-uninstall-nodist_pycairoexecPYTHON:
+uninstall-pycairoexecPYTHON:
 	@$(NORMAL_UNINSTALL)
-	@list='$(nodist_pycairoexec_PYTHON)'; dlist=''; for p in $$list; do\
+	@list='$(pycairoexec_PYTHON)'; dlist=''; for p in $$list; do\
 	  f=$(am__strip_dir) \
 	  rm -f "$(DESTDIR)$(pycairoexecdir)/$$f"; \
 	  rm -f "$(DESTDIR)$(pycairoexecdir)/$${f}c"; \
@@ -607,8 +575,8 @@ info-am:
 
 install-data-am: install-pkgincludeHEADERS
 
-install-exec-am: install-nodist_pycairoexecPYTHON \
-	install-pycairoexecLTLIBRARIES
+install-exec-am: install-pycairoexecLTLIBRARIES \
+	install-pycairoexecPYTHON
 
 install-info: install-info-am
 
@@ -634,8 +602,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-nodist_pycairoexecPYTHON \
-	uninstall-pkgincludeHEADERS uninstall-pycairoexecLTLIBRARIES
+uninstall-am: uninstall-info-am uninstall-pkgincludeHEADERS \
+	uninstall-pycairoexecLTLIBRARIES uninstall-pycairoexecPYTHON
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-pycairoexecLTLIBRARIES ctags distclean \
@@ -643,14 +611,14 @@ uninstall-am: uninstall-info-am uninstall-nodist_pycairoexecPYTHON \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am install-man \
-	install-nodist_pycairoexecPYTHON install-pkgincludeHEADERS \
-	install-pycairoexecLTLIBRARIES install-strip installcheck \
+	install-pkgincludeHEADERS install-pycairoexecLTLIBRARIES \
+	install-pycairoexecPYTHON install-strip installcheck \
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-info-am \
-	uninstall-nodist_pycairoexecPYTHON uninstall-pkgincludeHEADERS \
-	uninstall-pycairoexecLTLIBRARIES
+	uninstall-pkgincludeHEADERS uninstall-pycairoexecLTLIBRARIES \
+	uninstall-pycairoexecPYTHON
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
