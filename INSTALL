@@ -1,0 +1,23 @@
+This package uses automake
+
+        $ python -c "import sys; print sys.prefix"
+            # make a note of the python prefix
+
+To build from CVS:
+	$ ./autogen.sh --prefix=<python_prefix>
+or to build from a snapshot release:
+        $ ./configure --prefix=<python_prefix>
+
+After that, standard build procedures apply:
+
+        $ make
+        # make install
+
+If you're installing to another prefix than the one where Python is installed
+Python will not be able to find the cairo module until you add
+$prefix/lib/pythonX.Y/site-packages to the PYTHONPATH variable.
+
+If libsvg-cairo, PyGTK or Numeric Python are detected optional modules will
+be compiled. To disable PyGTK support use
+
+    $ ./configure --without-pygtk

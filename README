@@ -1,0 +1,26 @@
+Pycairo - Python bindings for cairo
+http://www.cairographics.org/pycairo
+
+Compiling
+---------
+See the INSTALL document for build instructions.
+
+Dependencies
+------------
+    cairo  		>= 0.9.0
+    Python 		>= 2.3
+    libsvg-cairo	optional >= 0.1.6
+    Numeric Python	optional
+    PyGTK		optional >= 2.2.0
+
+Mailing List
+------------
+If you have some ideas for how cairo or Pycairo could be improved, please feel
+free to send a message to cairo@cairographics.org
+
+	http://cairographics.org/cgi-bin/mailman/listinfo/cairo
+
+Bugzilla
+--------
+If you find a bug in Pycairo, please go to https://bugs.freedesktop.org/
+select the pycairo product and submit a bugreport.
