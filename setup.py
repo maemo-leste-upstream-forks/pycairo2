@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-
+from __future__ import with_statement
 import distutils.core      as dic
 import distutils.dir_util  as dut
 import distutils.file_util as fut
-import io
 import subprocess
 import sys
 
@@ -71,9 +70,6 @@ def createConfigFile(ConfigFile):
             )
 
 
-if sys.version_info < (2,6):
-  raise SystemExit('Error: Python >= 2.6 is required')
-
 pkg_config_version_check ('cairo', cairo_version_required)
 if sys.platform == 'win32':
   runtime_library_dirs = []
@@ -107,4 +103,6 @@ dic.setup(
   ext_modules = [cairo],
   data_files=[('include/pycairo',['src/pycairo.h']),
               ('lib/pkgconfig',[pkgconfig_file])],
+  package_dir = {"cairo": "src"},
+  packages = ["cairo"],
   )
