@@ -6,3 +6,6 @@ f1b7f80838f8f6633a96d144419e2d1f07bbd419
 pycairo_1.8.8.orig.tar.gz
 b127ed59bd876ca0fe5d0cf0f69735835c599e9b
 475651
+debianTag="debian/%e%v"
+patchedTag="patched/%e%v"
+upstreamTag="upstream/%e%u"
