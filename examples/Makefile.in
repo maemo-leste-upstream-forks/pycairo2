@@ -42,7 +42,7 @@ am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 SOURCES =
@@ -79,8 +79,6 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 F77 = @F77@
 FFLAGS = @FFLAGS@
-GTK_CFLAGS = @GTK_CFLAGS@
-GTK_LIBS = @GTK_LIBS@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -111,13 +109,12 @@ PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
+SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
 VERSION = @VERSION@
 VERSION_INFO = @VERSION_INFO@
-WITH_PYGTK_FALSE = @WITH_PYGTK_FALSE@
-WITH_PYGTK_TRUE = @WITH_PYGTK_TRUE@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
 ac_ct_CXX = @ac_ct_CXX@
@@ -186,6 +183,7 @@ EXTRA_DIST = \
   cairo_snippets/snippets/ellipse.py \
   cairo_snippets/snippets/fill_and_stroke2.py \
   cairo_snippets/snippets/fill_and_stroke.py \
+  cairo_snippets/snippets/glyph_path.py \
   cairo_snippets/snippets/gradient.py \
   cairo_snippets/snippets/gradient_mask.py \
   cairo_snippets/snippets/group.py \
@@ -195,6 +193,7 @@ EXTRA_DIST = \
   cairo_snippets/snippets/path.py \
   cairo_snippets/snippets/set_line_cap.py \
   cairo_snippets/snippets/set_line_join.py \
+  cairo_snippets/snippets/show_glyphs.py \
   cairo_snippets/snippets/text_align_center.py \
   cairo_snippets/snippets/text_extents.py \
   cairo_snippets/snippets/text.py \
