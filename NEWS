@@ -1,3 +1,84 @@
+Overview of changes from pycairo 1.8.0 to pycairo 1.8.2
+=======================================================
+
+Pycairo 1.8.0 resulted in crashes for some applications using threads. So
+upgrading to 1.8.2 is recommended for threaded applications.
+
+Bug Fixes: #19287: Threading support results in crashes in cairo.ImageSurface
+
+New Methods:
+    Context.set_scaled_font
+
+API Changes:
+    Matrix multiplication:
+    old code: matrix3 = matrix1 * matrix2
+    new equivalent code: matrix3 = matrix1.multiply(matrix2)
+    matrix3 = matrix1 * matrix2
+    is now equivalent to matrix3 = matrix2.multiply(matrix1)
+    which is consistent with standard matrix multiplication.
+
+
+Overview of changes from pycairo 1.6.4 to pycairo 1.8.0
+=======================================================
+General Changes:
+    Pycairo 1.8.0 requires cairo 1.8.0 (or later).
+    Add documentation (available separately)
+
+Bug Fixes:
+    18101: Add support for threading
+    18947: cairo.SurfacePattern should INCREF the used surface
+
+New Methods:
+    ScaledFont.get_scale_matrix
+    Surface.mark_dirty_rectangle
+    Surface.set_fallback_resolution
+
+New Constants:
+    cairo.EXTEND_PAD
+    cairo.HAS_IMAGE_SURFACE
+    cairo.HAS_USER_FONT
+
+API Changes:
+    Surface.mark_dirty: no longer accepts keyword arguments with default
+    values.
+    PycairoPattern_FromPattern (C API): has a new 'base' argument - to fix
+    #18947.
+
+Other Changes:
+    Allow unknown cairo Pattern/Surface types to use the pycairo base
+    Pattern/Surface type.
+
+
+Overview of changes from pycairo 1.4.12 to pycairo 1.6.4
+========================================================
+General changes:
+    Pycairo 1.6.4 requires cairo 1.6.4 (or later).
+                  requires Python 2.5 (or later).
+
+Bug fixes:
+    16112: Fix win32 'python setup.py ...' build -- use double quotes
+
+New Methods:
+    Context.has_current_point
+    Context.path_extents
+    ImageSurface.format_stride_for_width
+    PSSurface.get_eps
+    PSSurface.set_eps
+    PSSurface.ps_level_to_string
+    PSSurface.restrict_to_level
+    Surface.copy_page
+    Surface.show_page
+
+New Constants:
+    cairo.PS_LEVEL_2, cairo.PS_LEVEL_3
+
+Other changes:
+    test/pygame-test1.py, test/pygame-test2.py : pygame tests
+
+    examples/cairo_snippets/snippets/ellipse.py : Update
+    so line-width is a constant width in device-space not user-space
+
+
 Overview of changes from pycairo 1.4.0 to pycairo 1.4.12
 ========================================================
 General changes:

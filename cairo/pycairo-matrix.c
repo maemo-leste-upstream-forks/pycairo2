@@ -2,7 +2,7 @@
  *
  * Pycairo - Python bindings for cairo
  *
- * Copyright © 2003-2005 James Henstridge
+ * Copyright © 2003 James Henstridge, Steven Chaplin
  *
  * This library is free software; you can redistribute it and/or
  * modify it either under the terms of the GNU Lesser General Public
@@ -99,11 +99,27 @@ matrix_invert (PycairoMatrix *o)
     Py_RETURN_NONE;
 }
 
+/* cairo_matrix_multiply */
 static PyObject *
-matrix_multiply (PycairoMatrix *o, PycairoMatrix *o2)
+matrix_multiply (PycairoMatrix *o, PyObject *args)
+{
+    PycairoMatrix *mx2;
+
+    if (!PyArg_ParseTuple(args, "O!:Matrix.multiply",
+			  &PycairoMatrix_Type, &mx2))
+	return NULL;
+
+    cairo_matrix_t result;
+    cairo_matrix_multiply (&result, &o->matrix, &mx2->matrix);
+    return PycairoMatrix_FromMatrix (&result);
+}
+
+/* standard matrix multiply, for use by '*' operator */
+static PyObject *
+matrix_operator_multiply (PycairoMatrix *o, PycairoMatrix *o2)
 {
     cairo_matrix_t result;
-    cairo_matrix_multiply (&result, &o->matrix, &o2->matrix);
+    cairo_matrix_multiply (&result, &o2->matrix, &o->matrix);
     return PycairoMatrix_FromMatrix (&result);
 }
 
@@ -170,18 +186,6 @@ matrix_scale (PycairoMatrix *o, PyObject *args)
 }
 
 static PyObject *
-matrix_translate (PycairoMatrix *o, PyObject *args)
-{
-    double tx, ty;
-
-    if (!PyArg_ParseTuple(args, "dd:Matrix.translate", &tx, &ty))
-	return NULL;
-
-    cairo_matrix_translate (&o->matrix, tx, ty);
-    Py_RETURN_NONE;
-}
-
-static PyObject *
 matrix_transform_distance (PycairoMatrix *o, PyObject *args)
 {
     double dx, dy;
@@ -203,6 +207,18 @@ matrix_transform_point (PycairoMatrix *o, PyObject *args)
 
     cairo_matrix_transform_point (&o->matrix, &x, &y);
     return Py_BuildValue("(dd)", x, y);
+}
+
+static PyObject *
+matrix_translate (PycairoMatrix *o, PyObject *args)
+{
+    double tx, ty;
+
+    if (!PyArg_ParseTuple(args, "dd:Matrix.translate", &tx, &ty))
+	return NULL;
+
+    cairo_matrix_translate (&o->matrix, tx, ty);
+    Py_RETURN_NONE;
 }
 
 static PyObject *
@@ -230,7 +246,7 @@ matrix_item (PycairoMatrix *o, Py_ssize_t i)
 static PyNumberMethods matrix_as_number = {
   (binaryfunc)0,   /*nb_add*/
   (binaryfunc)0,   /*nb_subtract*/
-  (binaryfunc)matrix_multiply, 	/*nb_multiply*/
+  (binaryfunc)matrix_operator_multiply,  /*nb_multiply*/
   (binaryfunc)0,   /*nb_divide*/
   (binaryfunc)0,   /*nb_remainder*/
   (binaryfunc)0,   /*nb_divmod*/
@@ -284,14 +300,16 @@ static PyMethodDef matrix_methods[] = {
     /* Do not need to wrap all cairo_matrix_init_*() functions
      * C API Matrix constructors       Python equivalents
      * cairo_matrix_init()             cairo.Matrix(xx,yx,xy,yy,x0,y0)
+     * cairo_matrix_init_rotate()      cairo.Matrix.init_rotate(radians)
+
      * cairo_matrix_init_identity()    cairo.Matrix()
      * cairo_matrix_init_translate()   cairo.Matrix(x0=x0,y0=y0)
      * cairo_matrix_init_scale()       cairo.Matrix(xx=xx,yy=yy)
-     * cairo_matrix_init_rotate()      cairo.Matrix.init_rotate(radians)
      */
     {"init_rotate", (PyCFunction)matrix_init_rotate,
                                                    METH_VARARGS | METH_CLASS },
     {"invert",      (PyCFunction)matrix_invert,                METH_NOARGS },
+    {"multiply",    (PyCFunction)matrix_multiply,              METH_VARARGS },
     {"rotate",      (PyCFunction)matrix_rotate,                METH_VARARGS },
     {"scale",       (PyCFunction)matrix_scale,                 METH_VARARGS },
     {"transform_distance",(PyCFunction)matrix_transform_distance,

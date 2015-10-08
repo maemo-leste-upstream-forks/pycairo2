@@ -2,7 +2,7 @@
  *
  * Pycairo - Python bindings for cairo
  *
- * Copyright © 2003-2005 James Henstridge
+ * Copyright © 2003 James Henstridge, Steven Chaplin
  *
  * This library is free software; you can redistribute it and/or
  * modify it either under the terms of the GNU Lesser General Public
@@ -124,7 +124,9 @@ pycairo_append_path (PycairoContext *o, PyObject *args)
 			  &PycairoPath_Type, &p))
 	return NULL;
 
+    Py_BEGIN_ALLOW_THREADS
     cairo_append_path (o->ctx, p->path);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -160,7 +162,9 @@ pycairo_arc_negative (PycairoContext *o, PyObject *args)
 static PyObject *
 pycairo_clip (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_clip (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -177,7 +181,9 @@ pycairo_clip_extents (PycairoContext *o)
 static PyObject *
 pycairo_clip_preserve (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_clip_preserve (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -185,7 +191,9 @@ pycairo_clip_preserve (PycairoContext *o)
 static PyObject *
 pycairo_close_path (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_close_path (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -226,7 +234,9 @@ pycairo_copy_clip_rectangle_list (PycairoContext *o)
 static PyObject *
 pycairo_copy_page (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_copy_page (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -234,13 +244,21 @@ pycairo_copy_page (PycairoContext *o)
 static PyObject *
 pycairo_copy_path (PycairoContext *o)
 {
-    return PycairoPath_FromPath (cairo_copy_path (o->ctx));
+    cairo_path_t *cp;
+    Py_BEGIN_ALLOW_THREADS
+    cp = cairo_copy_path (o->ctx);
+    Py_END_ALLOW_THREADS
+    return PycairoPath_FromPath (cp);
 }
 
 static PyObject *
 pycairo_copy_path_flat (PycairoContext *o)
 {
-    return PycairoPath_FromPath (cairo_copy_path_flat (o->ctx));
+    cairo_path_t *cp;
+    Py_BEGIN_ALLOW_THREADS
+    cp = cairo_copy_path_flat (o->ctx);
+    Py_END_ALLOW_THREADS
+    return PycairoPath_FromPath (cp);
 }
 
 static PyObject *
@@ -287,7 +305,9 @@ pycairo_device_to_user_distance (PycairoContext *o, PyObject *args)
 static PyObject *
 pycairo_fill (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_fill (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -304,7 +324,9 @@ pycairo_fill_extents (PycairoContext *o)
 static PyObject *
 pycairo_fill_preserve (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_fill_preserve (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -460,7 +482,7 @@ static PyObject *
 pycairo_get_source (PycairoContext *o)
 {
     return PycairoPattern_FromPattern (
-	       cairo_pattern_reference (cairo_get_source (o->ctx)));
+	       cairo_pattern_reference (cairo_get_source (o->ctx)), NULL);
 }
 
 static PyObject *
@@ -572,6 +594,15 @@ pycairo_glyph_path (PycairoContext *o, PyObject *args)
 }
 
 static PyObject *
+pycairo_has_current_point (PycairoContext *o)
+{
+    PyObject *b = cairo_has_current_point (o->ctx) ? Py_True : Py_False;
+    RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
+    Py_INCREF(b);
+    return b;
+}
+
+static PyObject *
 pycairo_identity_matrix (PycairoContext *o)
 {
     cairo_identity_matrix (o->ctx);
@@ -630,7 +661,9 @@ pycairo_mask (PycairoContext *o, PyObject *args)
     if (!PyArg_ParseTuple(args, "O!:Context.mask", &PycairoPattern_Type, &p))
 	return NULL;
 
+    Py_BEGIN_ALLOW_THREADS
     cairo_mask (o->ctx, p->pattern);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -645,7 +678,9 @@ pycairo_mask_surface (PycairoContext *o, PyObject *args)
 			   &PycairoSurface_Type, &s, &surface_x, &surface_y))
 	return NULL;
 
+    Py_BEGIN_ALLOW_THREADS
     cairo_mask_surface (o->ctx, s->surface, surface_x, surface_y);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -682,7 +717,9 @@ pycairo_new_sub_path (PycairoContext *o)
 static PyObject *
 pycairo_paint (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_paint (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -695,15 +732,26 @@ pycairo_paint_with_alpha (PycairoContext *o, PyObject *args)
     if (!PyArg_ParseTuple (args, "d:Context.paint_with_alpha", &alpha))
 	return NULL;
 
+    Py_BEGIN_ALLOW_THREADS
     cairo_paint_with_alpha (o->ctx, alpha);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
 
 static PyObject *
+pycairo_path_extents (PycairoContext *o)
+{
+    double x1, y1, x2, y2;
+    cairo_path_extents (o->ctx, &x1, &y1, &x2, &y2);
+    RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
+    return Py_BuildValue("(dddd)", x1, y1, x2, y2);
+}
+
+static PyObject *
 pycairo_pop_group (PycairoContext *o)
 {
-    return PycairoPattern_FromPattern (cairo_pop_group (o->ctx));
+    return PycairoPattern_FromPattern (cairo_pop_group (o->ctx), NULL);
 }
 
 static PyObject *
@@ -1060,6 +1108,19 @@ pycairo_set_operator(PycairoContext *o, PyObject *args)
 }
 
 static PyObject *
+pycairo_set_scaled_font(PycairoContext *o, PyObject *args)
+{
+    PycairoScaledFont *f;
+    if (!PyArg_ParseTuple( args, "O!:Context.set_scaled_font",
+                           &PycairoScaledFont_Type, &f))
+        return NULL;
+
+    cairo_set_scaled_font(o->ctx, f->scaled_font);
+    RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
+    Py_RETURN_NONE;
+}
+
+static PyObject *
 pycairo_set_source (PycairoContext *o, PyObject *args)
 {
     PycairoPattern *p;
@@ -1142,7 +1203,9 @@ pycairo_show_glyphs (PycairoContext *o, PyObject *args)
     glyphs = _PyGlyphs_AsGlyphs (py_object, &num_glyphs);
     if (glyphs == NULL)
 	return NULL;
+    Py_BEGIN_ALLOW_THREADS
     cairo_show_glyphs (o->ctx, glyphs, num_glyphs);
+    Py_END_ALLOW_THREADS
     PyMem_Free (glyphs);
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
@@ -1151,7 +1214,9 @@ pycairo_show_glyphs (PycairoContext *o, PyObject *args)
 static PyObject *
 pycairo_show_page (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_show_page (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -1167,7 +1232,9 @@ pycairo_show_text (PycairoContext *o, PyObject *obj)
 	return NULL;
     }
 
+    Py_BEGIN_ALLOW_THREADS
     cairo_show_text (o->ctx, utf8);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -1175,7 +1242,9 @@ pycairo_show_text (PycairoContext *o, PyObject *obj)
 static PyObject *
 pycairo_stroke (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_stroke (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -1192,7 +1261,9 @@ pycairo_stroke_extents (PycairoContext *o)
 static PyObject *
 pycairo_stroke_preserve (PycairoContext *o)
 {
+    Py_BEGIN_ALLOW_THREADS
     cairo_stroke_preserve (o->ctx);
+    Py_END_ALLOW_THREADS
     RETURN_NULL_IF_CAIRO_CONTEXT_ERROR(o->ctx);
     Py_RETURN_NONE;
 }
@@ -1298,107 +1369,109 @@ static PyMethodDef pycairo_methods[] = {
      * - not needed since Pycairo calls Pycairo_Check_Status() to check
      *   for errors and raise exceptions
      */
-    {"append_path",     (PyCFunction)pycairo_append_path,     METH_VARARGS},
-    {"arc",             (PyCFunction)pycairo_arc,             METH_VARARGS},
-    {"arc_negative",    (PyCFunction)pycairo_arc_negative,    METH_VARARGS},
-    {"clip",            (PyCFunction)pycairo_clip,            METH_NOARGS},
-    {"clip_extents",    (PyCFunction)pycairo_clip_extents,    METH_NOARGS},
-    {"clip_preserve",   (PyCFunction)pycairo_clip_preserve,   METH_NOARGS},
-    {"close_path",      (PyCFunction)pycairo_close_path,      METH_NOARGS},
+    {"append_path",     (PyCFunction)pycairo_append_path,      METH_VARARGS},
+    {"arc",             (PyCFunction)pycairo_arc,              METH_VARARGS},
+    {"arc_negative",    (PyCFunction)pycairo_arc_negative,     METH_VARARGS},
+    {"clip",            (PyCFunction)pycairo_clip,             METH_NOARGS},
+    {"clip_extents",    (PyCFunction)pycairo_clip_extents,     METH_NOARGS},
+    {"clip_preserve",   (PyCFunction)pycairo_clip_preserve,    METH_NOARGS},
+    {"close_path",      (PyCFunction)pycairo_close_path,       METH_NOARGS},
     {"copy_clip_rectangle_list", (PyCFunction)pycairo_copy_clip_rectangle_list,
-                                                              METH_NOARGS},
-    {"copy_page",       (PyCFunction)pycairo_copy_page,       METH_NOARGS},
-    {"copy_path",       (PyCFunction)pycairo_copy_path,       METH_NOARGS},
-    {"copy_path_flat",  (PyCFunction)pycairo_copy_path_flat,  METH_NOARGS},
-    {"curve_to",        (PyCFunction)pycairo_curve_to,        METH_VARARGS},
-    {"device_to_user",  (PyCFunction)pycairo_device_to_user,  METH_VARARGS},
+                                                               METH_NOARGS},
+    {"copy_page",       (PyCFunction)pycairo_copy_page,        METH_NOARGS},
+    {"copy_path",       (PyCFunction)pycairo_copy_path,        METH_NOARGS},
+    {"copy_path_flat",  (PyCFunction)pycairo_copy_path_flat,   METH_NOARGS},
+    {"curve_to",        (PyCFunction)pycairo_curve_to,         METH_VARARGS},
+    {"device_to_user",  (PyCFunction)pycairo_device_to_user,   METH_VARARGS},
     {"device_to_user_distance",
-               (PyCFunction)pycairo_device_to_user_distance,  METH_VARARGS},
-    {"fill",            (PyCFunction)pycairo_fill,            METH_NOARGS},
-    {"fill_extents",    (PyCFunction)pycairo_fill_extents,    METH_NOARGS},
-    {"fill_preserve",   (PyCFunction)pycairo_fill_preserve,   METH_NOARGS},
-    {"font_extents",    (PyCFunction)pycairo_font_extents,    METH_NOARGS},
-    {"get_antialias",   (PyCFunction)pycairo_get_antialias,   METH_NOARGS},
+               (PyCFunction)pycairo_device_to_user_distance,   METH_VARARGS},
+    {"fill",            (PyCFunction)pycairo_fill,             METH_NOARGS},
+    {"fill_extents",    (PyCFunction)pycairo_fill_extents,     METH_NOARGS},
+    {"fill_preserve",   (PyCFunction)pycairo_fill_preserve,    METH_NOARGS},
+    {"font_extents",    (PyCFunction)pycairo_font_extents,     METH_NOARGS},
+    {"get_antialias",   (PyCFunction)pycairo_get_antialias,    METH_NOARGS},
     {"get_current_point",(PyCFunction)pycairo_get_current_point,METH_NOARGS},
-    {"get_dash",        (PyCFunction)pycairo_get_dash,        METH_NOARGS},
-    {"get_dash_count",  (PyCFunction)pycairo_get_dash_count,  METH_NOARGS},
-    {"get_fill_rule",   (PyCFunction)pycairo_get_fill_rule,   METH_NOARGS},
-    {"get_font_face",   (PyCFunction)pycairo_get_font_face,   METH_NOARGS},
-    {"get_font_matrix", (PyCFunction)pycairo_get_font_matrix, METH_NOARGS},
-    {"get_font_options",(PyCFunction)pycairo_get_font_options,METH_NOARGS},
-    {"get_group_target",(PyCFunction)pycairo_get_group_target,METH_NOARGS},
-    {"get_line_cap",    (PyCFunction)pycairo_get_line_cap,    METH_NOARGS},
-    {"get_line_join",   (PyCFunction)pycairo_get_line_join,   METH_NOARGS},
-    {"get_line_width",  (PyCFunction)pycairo_get_line_width,  METH_NOARGS},
-    {"get_matrix",      (PyCFunction)pycairo_get_matrix,      METH_NOARGS},
-    {"get_miter_limit", (PyCFunction)pycairo_get_miter_limit, METH_NOARGS},
-    {"get_operator",    (PyCFunction)pycairo_get_operator,    METH_NOARGS},
-    {"get_scaled_font", (PyCFunction)pycairo_get_scaled_font, METH_NOARGS},
-    {"get_source",      (PyCFunction)pycairo_get_source,      METH_NOARGS},
-    {"get_target",      (PyCFunction)pycairo_get_target,      METH_NOARGS},
-    {"get_tolerance",   (PyCFunction)pycairo_get_tolerance,   METH_NOARGS},
-    {"glyph_extents",   (PyCFunction)pycairo_glyph_extents,   METH_VARARGS},
-    {"glyph_path",      (PyCFunction)pycairo_glyph_path,      METH_VARARGS},
-    {"identity_matrix", (PyCFunction)pycairo_identity_matrix, METH_NOARGS},
-    {"in_fill",         (PyCFunction)pycairo_in_fill,         METH_VARARGS},
-    {"in_stroke",       (PyCFunction)pycairo_in_stroke,       METH_VARARGS},
-    {"line_to",         (PyCFunction)pycairo_line_to,         METH_VARARGS},
-    {"mask",            (PyCFunction)pycairo_mask,            METH_VARARGS},
-    {"mask_surface",    (PyCFunction)pycairo_mask_surface,    METH_VARARGS},
-    {"move_to",         (PyCFunction)pycairo_move_to,         METH_VARARGS},
-    {"new_path",        (PyCFunction)pycairo_new_path,        METH_NOARGS},
-    {"new_sub_path",    (PyCFunction)pycairo_new_sub_path,    METH_NOARGS},
-    {"paint",           (PyCFunction)pycairo_paint,           METH_NOARGS},
-    {"paint_with_alpha",(PyCFunction)pycairo_paint_with_alpha,METH_VARARGS},
-    {"pop_group",       (PyCFunction)pycairo_pop_group,       METH_NOARGS},
+    {"get_dash",        (PyCFunction)pycairo_get_dash,         METH_NOARGS},
+    {"get_dash_count",  (PyCFunction)pycairo_get_dash_count,   METH_NOARGS},
+    {"get_fill_rule",   (PyCFunction)pycairo_get_fill_rule,    METH_NOARGS},
+    {"get_font_face",   (PyCFunction)pycairo_get_font_face,    METH_NOARGS},
+    {"get_font_matrix", (PyCFunction)pycairo_get_font_matrix,  METH_NOARGS},
+    {"get_font_options",(PyCFunction)pycairo_get_font_options, METH_NOARGS},
+    {"get_group_target",(PyCFunction)pycairo_get_group_target, METH_NOARGS},
+    {"get_line_cap",    (PyCFunction)pycairo_get_line_cap,     METH_NOARGS},
+    {"get_line_join",   (PyCFunction)pycairo_get_line_join,    METH_NOARGS},
+    {"get_line_width",  (PyCFunction)pycairo_get_line_width,   METH_NOARGS},
+    {"get_matrix",      (PyCFunction)pycairo_get_matrix,       METH_NOARGS},
+    {"get_miter_limit", (PyCFunction)pycairo_get_miter_limit,  METH_NOARGS},
+    {"get_operator",    (PyCFunction)pycairo_get_operator,     METH_NOARGS},
+    {"get_scaled_font", (PyCFunction)pycairo_get_scaled_font,  METH_NOARGS},
+    {"get_source",      (PyCFunction)pycairo_get_source,       METH_NOARGS},
+    {"get_target",      (PyCFunction)pycairo_get_target,       METH_NOARGS},
+    {"get_tolerance",   (PyCFunction)pycairo_get_tolerance,    METH_NOARGS},
+    {"glyph_extents",   (PyCFunction)pycairo_glyph_extents,    METH_VARARGS},
+    {"glyph_path",      (PyCFunction)pycairo_glyph_path,       METH_VARARGS},
+    {"has_current_point",(PyCFunction)pycairo_has_current_point, METH_NOARGS},
+    {"identity_matrix", (PyCFunction)pycairo_identity_matrix,  METH_NOARGS},
+    {"in_fill",         (PyCFunction)pycairo_in_fill,          METH_VARARGS},
+    {"in_stroke",       (PyCFunction)pycairo_in_stroke,        METH_VARARGS},
+    {"line_to",         (PyCFunction)pycairo_line_to,          METH_VARARGS},
+    {"mask",            (PyCFunction)pycairo_mask,             METH_VARARGS},
+    {"mask_surface",    (PyCFunction)pycairo_mask_surface,     METH_VARARGS},
+    {"move_to",         (PyCFunction)pycairo_move_to,          METH_VARARGS},
+    {"new_path",        (PyCFunction)pycairo_new_path,         METH_NOARGS},
+    {"new_sub_path",    (PyCFunction)pycairo_new_sub_path,     METH_NOARGS},
+    {"paint",           (PyCFunction)pycairo_paint,            METH_NOARGS},
+    {"paint_with_alpha",(PyCFunction)pycairo_paint_with_alpha, METH_VARARGS},
+    {"path_extents",    (PyCFunction)pycairo_path_extents,     METH_NOARGS},
+    {"pop_group",       (PyCFunction)pycairo_pop_group,        METH_NOARGS},
     {"pop_group_to_source",
-                    (PyCFunction)pycairo_pop_group_to_source, METH_NOARGS},
-    {"push_group",      (PyCFunction)pycairo_push_group,      METH_NOARGS},
+                    (PyCFunction)pycairo_pop_group_to_source,  METH_NOARGS},
+    {"push_group",      (PyCFunction)pycairo_push_group,       METH_NOARGS},
     {"push_group_with_content",
-                (PyCFunction)pycairo_push_group_with_content, METH_VARARGS},
-    {"rectangle",       (PyCFunction)pycairo_rectangle,       METH_VARARGS},
-    {"rel_curve_to",    (PyCFunction)pycairo_rel_curve_to,    METH_VARARGS},
-    {"rel_line_to",     (PyCFunction)pycairo_rel_line_to,     METH_VARARGS},
-    {"rel_move_to",     (PyCFunction)pycairo_rel_move_to,     METH_VARARGS},
-    {"reset_clip",      (PyCFunction)pycairo_reset_clip,      METH_NOARGS},
-    {"restore",         (PyCFunction)pycairo_restore,         METH_NOARGS},
-    {"rotate",          (PyCFunction)pycairo_rotate,          METH_VARARGS},
-    {"save",            (PyCFunction)pycairo_save,            METH_NOARGS},
-    {"scale",           (PyCFunction)pycairo_scale,           METH_VARARGS},
-    {"select_font_face",(PyCFunction)pycairo_select_font_face,METH_VARARGS},
-    {"set_antialias",   (PyCFunction)pycairo_set_antialias,   METH_VARARGS},
-    {"set_dash",        (PyCFunction)pycairo_set_dash,        METH_VARARGS},
-    {"set_fill_rule",   (PyCFunction)pycairo_set_fill_rule,   METH_VARARGS},
-    {"set_font_face",   (PyCFunction)pycairo_set_font_face,   METH_O},
-    {"set_font_matrix", (PyCFunction)pycairo_set_font_matrix, METH_VARARGS},
-    {"set_font_options",(PyCFunction)pycairo_set_font_options,METH_VARARGS},
-    {"set_font_size",   (PyCFunction)pycairo_set_font_size,   METH_VARARGS},
-    {"set_line_cap",    (PyCFunction)pycairo_set_line_cap,    METH_VARARGS},
-    {"set_line_join",   (PyCFunction)pycairo_set_line_join,   METH_VARARGS},
-    {"set_line_width",  (PyCFunction)pycairo_set_line_width,  METH_VARARGS},
-    {"set_matrix",      (PyCFunction)pycairo_set_matrix,      METH_VARARGS},
-    {"set_miter_limit", (PyCFunction)pycairo_set_miter_limit, METH_VARARGS},
-    {"set_operator",    (PyCFunction)pycairo_set_operator,    METH_VARARGS},
-    /* set_scaled_font */
-    {"set_source",      (PyCFunction)pycairo_set_source,      METH_VARARGS},
-    {"set_source_rgb",  (PyCFunction)pycairo_set_source_rgb,  METH_VARARGS},
-    {"set_source_rgba", (PyCFunction)pycairo_set_source_rgba, METH_VARARGS},
+                (PyCFunction)pycairo_push_group_with_content,  METH_VARARGS},
+    {"rectangle",       (PyCFunction)pycairo_rectangle,        METH_VARARGS},
+    {"rel_curve_to",    (PyCFunction)pycairo_rel_curve_to,     METH_VARARGS},
+    {"rel_line_to",     (PyCFunction)pycairo_rel_line_to,      METH_VARARGS},
+    {"rel_move_to",     (PyCFunction)pycairo_rel_move_to,      METH_VARARGS},
+    {"reset_clip",      (PyCFunction)pycairo_reset_clip,       METH_NOARGS},
+    {"restore",         (PyCFunction)pycairo_restore,          METH_NOARGS},
+    {"rotate",          (PyCFunction)pycairo_rotate,           METH_VARARGS},
+    {"save",            (PyCFunction)pycairo_save,             METH_NOARGS},
+    {"scale",           (PyCFunction)pycairo_scale,            METH_VARARGS},
+    {"select_font_face",(PyCFunction)pycairo_select_font_face, METH_VARARGS},
+    {"set_antialias",   (PyCFunction)pycairo_set_antialias,    METH_VARARGS},
+    {"set_dash",        (PyCFunction)pycairo_set_dash,         METH_VARARGS},
+    {"set_fill_rule",   (PyCFunction)pycairo_set_fill_rule,    METH_VARARGS},
+    {"set_font_face",   (PyCFunction)pycairo_set_font_face,    METH_O},
+    {"set_font_matrix", (PyCFunction)pycairo_set_font_matrix,  METH_VARARGS},
+    {"set_font_options",(PyCFunction)pycairo_set_font_options, METH_VARARGS},
+    {"set_font_size",   (PyCFunction)pycairo_set_font_size,    METH_VARARGS},
+    {"set_line_cap",    (PyCFunction)pycairo_set_line_cap,     METH_VARARGS},
+    {"set_line_join",   (PyCFunction)pycairo_set_line_join,    METH_VARARGS},
+    {"set_line_width",  (PyCFunction)pycairo_set_line_width,   METH_VARARGS},
+    {"set_matrix",      (PyCFunction)pycairo_set_matrix,       METH_VARARGS},
+    {"set_miter_limit", (PyCFunction)pycairo_set_miter_limit,  METH_VARARGS},
+    {"set_operator",    (PyCFunction)pycairo_set_operator,     METH_VARARGS},
+    {"set_scaled_font", (PyCFunction)pycairo_set_scaled_font,  METH_VARARGS},
+    {"set_source",      (PyCFunction)pycairo_set_source,       METH_VARARGS},
+    {"set_source_rgb",  (PyCFunction)pycairo_set_source_rgb,   METH_VARARGS},
+    {"set_source_rgba", (PyCFunction)pycairo_set_source_rgba,  METH_VARARGS},
     {"set_source_surface",(PyCFunction)pycairo_set_source_surface,
-                                                              METH_VARARGS},
-    {"set_tolerance",   (PyCFunction)pycairo_set_tolerance,   METH_VARARGS},
-    {"show_glyphs",     (PyCFunction)pycairo_show_glyphs,     METH_VARARGS},
-    {"show_page",       (PyCFunction)pycairo_show_page,       METH_NOARGS},
-    {"show_text",       (PyCFunction)pycairo_show_text,       METH_O},
-    {"stroke",          (PyCFunction)pycairo_stroke,          METH_NOARGS},
-    {"stroke_extents",  (PyCFunction)pycairo_stroke_extents,  METH_NOARGS},
-    {"stroke_preserve", (PyCFunction)pycairo_stroke_preserve, METH_NOARGS},
-    {"text_extents",    (PyCFunction)pycairo_text_extents,    METH_O},
-    {"text_path",       (PyCFunction)pycairo_text_path,       METH_O},
-    {"transform",       (PyCFunction)pycairo_transform,       METH_VARARGS},
-    {"translate",       (PyCFunction)pycairo_translate,       METH_VARARGS},
-    {"user_to_device",  (PyCFunction)pycairo_user_to_device,  METH_VARARGS},
+                                                               METH_VARARGS},
+    {"set_tolerance",   (PyCFunction)pycairo_set_tolerance,    METH_VARARGS},
+    {"show_glyphs",     (PyCFunction)pycairo_show_glyphs,      METH_VARARGS},
+    {"show_page",       (PyCFunction)pycairo_show_page,        METH_NOARGS},
+    {"show_text",       (PyCFunction)pycairo_show_text,        METH_O},
+    {"stroke",          (PyCFunction)pycairo_stroke,           METH_NOARGS},
+    {"stroke_extents",  (PyCFunction)pycairo_stroke_extents,   METH_NOARGS},
+    {"stroke_preserve", (PyCFunction)pycairo_stroke_preserve,  METH_NOARGS},
+    {"text_extents",    (PyCFunction)pycairo_text_extents,     METH_O},
+    {"text_path",       (PyCFunction)pycairo_text_path,        METH_O},
+    {"transform",       (PyCFunction)pycairo_transform,        METH_VARARGS},
+    {"translate",       (PyCFunction)pycairo_translate,        METH_VARARGS},
+    {"user_to_device",  (PyCFunction)pycairo_user_to_device,   METH_VARARGS},
     {"user_to_device_distance",(PyCFunction)pycairo_user_to_device_distance,
-                                                              METH_VARARGS},
+                                                               METH_VARARGS},
     {NULL, NULL, 0, NULL},
 };
 

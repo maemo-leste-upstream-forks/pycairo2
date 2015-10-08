@@ -2,7 +2,7 @@
  *
  * Pycairo - Python bindings for cairo
  *
- * Copyright © 2003-2005 James Henstridge
+ * Copyright © 2003 James Henstridge, Steven Chaplin
  *
  * This library is free software; you can redistribute it and/or
  * modify it either under the terms of the GNU Lesser General Public
@@ -36,10 +36,15 @@
 #endif
 #include "pycairo-private.h"
 
+/* to read CAIRO_PS_LEVEL_* constants */
+#ifdef CAIRO_HAS_PS_SURFACE
+#  include <cairo-ps.h>
+#endif
+
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 4
-#define VERSION_MICRO 12
-static char pycairo_version_string[] = "1.4.12";
+#define VERSION_MINOR 8
+#define VERSION_MICRO 2
+static char pycairo_version_string[] = "1.8.2";
 
 
 /* A module specific exception */
@@ -99,7 +104,11 @@ static Pycairo_CAPI_t CAPI = {
     &PycairoScaledFont_Type,   PycairoScaledFont_FromScaledFont,
 
     &PycairoSurface_Type,
+#ifdef CAIRO_HAS_IMAGE_SURFACE
     &PycairoImageSurface_Type,
+#else
+    0,
+#endif
 #ifdef CAIRO_HAS_PDF_SURFACE
     &PycairoPDFSurface_Type,
 #else
@@ -198,9 +207,11 @@ init_cairo(void)
     PycairoSurface_Type.tp_base = &PyBaseObject_Type;
     if (PyType_Ready(&PycairoSurface_Type) < 0)
         return;
+#ifdef CAIRO_HAS_IMAGE_SURFACE
     PycairoImageSurface_Type.tp_base = &PycairoSurface_Type;
     if (PyType_Ready(&PycairoImageSurface_Type) < 0)
         return;
+#endif
 #ifdef CAIRO_HAS_PDF_SURFACE
     PycairoPDFSurface_Type.tp_base = &PycairoSurface_Type;
     if (PyType_Ready(&PycairoPDFSurface_Type) < 0)
@@ -268,9 +279,12 @@ init_cairo(void)
 
     Py_INCREF(&PycairoSurface_Type);
     PyModule_AddObject(m, "Surface", (PyObject *)&PycairoSurface_Type);
+
+#ifdef CAIRO_HAS_IMAGE_SURFACE
     Py_INCREF(&PycairoImageSurface_Type);
     PyModule_AddObject(m, "ImageSurface",
 		       (PyObject *)&PycairoImageSurface_Type);
+#endif
 
 #ifdef CAIRO_HAS_PDF_SURFACE
     Py_INCREF(&PycairoPDFSurface_Type);
@@ -327,6 +341,11 @@ init_cairo(void)
 #else
     PyModule_AddIntConstant(m, "HAS_GLITZ_SURFACE", 0);
 #endif
+#if CAIRO_HAS_IMAGE_SURFACE
+    PyModule_AddIntConstant(m, "HAS_IMAGE_SURFACE", 1);
+#else
+    PyModule_AddIntConstant(m, "HAS_IMAGE_SURFACE", 0);
+#endif
 #if CAIRO_HAS_PDF_SURFACE
     PyModule_AddIntConstant(m, "HAS_PDF_SURFACE", 1);
 #else
@@ -346,6 +365,11 @@ init_cairo(void)
     PyModule_AddIntConstant(m, "HAS_SVG_SURFACE", 1);
 #else
     PyModule_AddIntConstant(m, "HAS_SVG_SURFACE", 0);
+#endif
+#if CAIRO_HAS_USER_FONT
+    PyModule_AddIntConstant(m, "HAS_USER_FONT", 1);
+#else
+    PyModule_AddIntConstant(m, "HAS_USER_FONT", 0);
 #endif
 #if CAIRO_HAS_QUARTZ_SURFACE
     PyModule_AddIntConstant(m, "HAS_QUARTZ_SURFACE", 1);
@@ -386,6 +410,7 @@ init_cairo(void)
     CONSTANT(EXTEND_NONE);
     CONSTANT(EXTEND_REPEAT);
     CONSTANT(EXTEND_REFLECT);
+    CONSTANT(EXTEND_PAD);
 
     CONSTANT(FILL_RULE_WINDING);
     CONSTANT(FILL_RULE_EVEN_ODD);
@@ -450,6 +475,11 @@ init_cairo(void)
     CONSTANT(PATH_LINE_TO);
     CONSTANT(PATH_CURVE_TO);
     CONSTANT(PATH_CLOSE_PATH);
+
+#ifdef CAIRO_HAS_PS_SURFACE
+    CONSTANT(PS_LEVEL_2);
+    CONSTANT(PS_LEVEL_3);
+#endif
 
     CONSTANT(SUBPIXEL_ORDER_DEFAULT);
     CONSTANT(SUBPIXEL_ORDER_RGB);
