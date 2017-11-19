@@ -9,8 +9,9 @@ pycairo (1.15.4-1) UNRELEASED; urgency=medium
     - Drop debian/patches/setup_25_compat, we don't need compatibility with
       python 2.5 anymore
   * debian/watch: Update watch file, the project has been moved to github
+  * Bump Standards-Version to 4.1.1 (no further changes)
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 11:48:06 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 11:48:53 +0100
 
 pycairo (1.8.8-2.2) unstable; urgency=medium
 

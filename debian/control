@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Uploaders: Dave Beckett <dajobe@debian.org>, Torsten Marek <shlomme@debian.org>
 Build-Depends: debhelper (>= 7), cdbs (>= 0.4.49), python-all-dev (>= 2.5.4-1~), python-all-dbg (>= 2.5.4-1~), dh-python, libcairo2-dev (>= 1.13.1), python-sphinx
-Standards-Version: 3.8.3
+Standards-Version: 4.1.1
 Homepage: http://cairographics.org/pycairo/
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/pycairo.git
 Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/pycairo.git
