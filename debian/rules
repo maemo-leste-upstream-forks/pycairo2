@@ -2,7 +2,7 @@
 DEB_COMPRESS_EXCLUDE= .js .inv
 
 %:
-	dh $@ --buildsystem=pybuild --with python2
+	dh $@ --buildsystem=pybuild --with python2,python3
 
 override_dh_auto_build:
 	dh_auto_build --buildsystem=pybuild
@@ -11,3 +11,7 @@ override_dh_auto_build:
 override_dh_auto_clean:
 	dh_auto_clean --buildsystem=pybuild
 	rm -rf debian/tmp-doc
+
+override_dh_install:
+	dh_install
+	rm -f $(CURDIR)/debian/python3-cairo/usr/lib/python3*/*-packages/cairo/_cairo.cpython-*dm-*.so

@@ -9,8 +9,11 @@ Build-Depends: debhelper (>= 10),
                python-all-dbg (>= 2.5.4-1~),
                python-all-dev (>= 2.5.4-1~),
                python-pytest <!nocheck>,
-               python-sphinx,
-               python-sphinx-rtd-theme
+               python3-all-dbg,
+               python3-all-dev,
+               python3-pytest <!nocheck>,
+               python3-sphinx,
+               python3-sphinx-rtd-theme
 Standards-Version: 4.1.1
 Homepage: http://cairographics.org/pycairo/
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/pycairo.git
@@ -49,3 +52,45 @@ Depends: libjs-jquery,
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).
+
+Package: python3-cairo
+Architecture: any
+Depends: ${misc:Depends}, ${python3:Depends}, ${shlibs:Depends}
+Provides: ${python3:Provides}
+Multi-arch: same
+Description: Python3 bindings for the Cairo vector graphics library
+ This package contains modules that allow you to use the Cairo vector
+ graphics library in Python3 programs.
+
+Package: python3-cairo-dbg
+Section: debug
+Architecture: any
+Depends: python3-cairo (= ${binary:Version}),
+         python3-dbg,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Provides: ${python3:Provides}
+Multi-arch: same
+Description: Python3 bindings for the Cairo vector graphics library (debug extension)
+ This package contains modules that allow you to use the cairo vector
+ graphics library in Python3 programs.
+ .
+ This package contains the extension built for the Python3 debug interpreter.
+
+Package: python3-cairo-dev
+Architecture: all
+Depends: python3-cairo (>= ${binary:Version}), ${misc:Depends}
+Suggests: python3-cairo-doc
+Description: Python3 cairo bindings: development files
+ This package contains files that allow you to compile wrappers
+ that interoperate with python3-cairo (pycairo).
+
+Package: python3-cairo-doc
+Architecture: all
+Section: doc
+Depends: libjs-jquery, libjs-underscore, ${misc:Depends}, ${sphinxdoc:Depends}
+Description: Python 3 cairo bindings: documentation files
+ Cairo is a multi-platform library providing anti-aliased vector-based
+ rendering for multiple target backends.
+ .
+ This package contains documentation files of python3-cairo (py3cairo).
