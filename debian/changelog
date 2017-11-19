@@ -13,8 +13,10 @@ pycairo (1.15.4-1) UNRELEASED; urgency=medium
   * Switch to dh sequences and bump debhelper compatibility to 10
   * Add python-pytest to the build-dependencies, this is needed for the tests
   * debian/python-cairo-dev.install: Fix installation of the .pc file
+  * debian/control: Move python-cairo-dbg to priority optional from priority
+    extra, the later is deprecated
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 12:21:25 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 12:26:18 +0100
 
 pycairo (1.8.8-2.2) unstable; urgency=medium
 

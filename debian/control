@@ -18,7 +18,6 @@ Description: Python bindings for the Cairo vector graphics library
  graphics library in Python programs.
 
 Package: python-cairo-dbg
-Priority: extra
 Section: debug
 Architecture: any
 Depends: python-cairo (= ${binary:Version}), python-dbg, ${shlibs:Depends}, ${misc:Depends}
