@@ -1,12 +1,16 @@
-pycairo (1.8.8-3) UNRELEASED; urgency=medium
+pycairo (1.15.4-1) UNRELEASED; urgency=medium
 
   [ Ondřej Nový ]
   * Fixed VCS URL (https)
 
   [ Laurent Bigonville ]
+  * New upstream release (Closes: #653588, #878080)
+    - Bump libcairo2-dev build-dependency (Closes: #605958)
+    - Drop debian/patches/setup_25_compat, we don't need compatibility with
+      python 2.5 anymore
   * debian/watch: Update watch file, the project has been moved to github
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 11:36:18 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 11:48:06 +0100
 
 pycairo (1.8.8-2.2) unstable; urgency=medium
 
