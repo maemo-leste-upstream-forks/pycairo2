@@ -3,7 +3,14 @@ Section: python
 Priority: optional
 Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
 Uploaders: Dave Beckett <dajobe@debian.org>, Torsten Marek <shlomme@debian.org>
-Build-Depends: debhelper (>= 10), python-all-dev (>= 2.5.4-1~), python-all-dbg (>= 2.5.4-1~), dh-python, libcairo2-dev (>= 1.13.1), python-sphinx, python-sphinx-rtd-theme, python-pytest <!nocheck>
+Build-Depends: debhelper (>= 10),
+               dh-python,
+               libcairo2-dev (>= 1.13.1),
+               python-all-dbg (>= 2.5.4-1~),
+               python-all-dev (>= 2.5.4-1~),
+               python-pytest <!nocheck>,
+               python-sphinx,
+               python-sphinx-rtd-theme
 Standards-Version: 4.1.1
 Homepage: http://cairographics.org/pycairo/
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/pycairo.git
@@ -11,7 +18,7 @@ Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/pycairo.git
 
 Package: python-cairo
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
 Provides: ${python:Provides}
 Multi-arch: same
 Description: Python bindings for the Cairo vector graphics library
@@ -21,7 +28,10 @@ Description: Python bindings for the Cairo vector graphics library
 Package: python-cairo-dbg
 Section: debug
 Architecture: any
-Depends: python-cairo (= ${binary:Version}), python-dbg, ${shlibs:Depends}, ${misc:Depends}
+Depends: python-cairo (= ${binary:Version}),
+         python-dbg,
+         ${misc:Depends},
+         ${shlibs:Depends}
 Provides: ${python:Provides}
 Multi-arch: same
 Description: Python bindings for the Cairo vector graphics library (debug extension)
@@ -32,7 +42,10 @@ Description: Python bindings for the Cairo vector graphics library (debug extens
 
 Package: python-cairo-dev
 Architecture: all
-Depends: python-cairo (>= ${binary:Version}), ${misc:Depends}, libjs-jquery, libjs-underscore
+Depends: libjs-jquery,
+         libjs-underscore,
+         python-cairo (>= ${binary:Version}),
+         ${misc:Depends}
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).

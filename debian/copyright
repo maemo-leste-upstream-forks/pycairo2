@@ -10,10 +10,10 @@ Copyrights are as follows:
 cairo/*.c:
 
   PyCairo - Python bindings for Cairo
- 
+
   Copyright 2003-2005 James Henstridge
   Copyright 2003-2005 Steve Chaplin
- 
+
   This library is free software; you can redistribute it and/or
   modify it either under the terms of the GNU Lesser General Public
   License version 2.1 as published by the Free Software Foundation
@@ -21,18 +21,18 @@ cairo/*.c:
   Public License Version 1.1 (the "MPL"). If you do not alter this
   notice, a recipient may use your version of this file under either
   the MPL or the LGPL.
- 
+
   You should have received a copy of the LGPL along with this library
   in the file COPYING-LGPL-2.1; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
   You should have received a copy of the MPL along with this library
   in the file COPYING-MPL-1.1
- 
+
   The contents of this file are subject to the Mozilla Public License
   Version 1.1 (the "License"); you may not use this file except in
   compliance with the License. You may obtain a copy of the License at
   http://www.mozilla.org/MPL/
- 
+
   This software is distributed on an "AS IS" basis, WITHOUT WARRANTY
   OF ANY KIND, either express or implied. See the LGPL or the MPL for
   the specific language governing rights and limitations.
@@ -46,7 +46,7 @@ The contents of COPYING-MPL-1.1 are included below
 examples/gtk/hangman.py:
 
   Copyright 2004 Kevin Worth
- 
+
   Permission to use, copy, modify, distribute, and sell this software
   and its documentation for any purpose is hereby granted without fee,
   provided that the above copyright notice appear in all copies and
@@ -57,7 +57,7 @@ examples/gtk/hangman.py:
   California makes no representations about the suitability of this
   software for any purpose.  It is provided "as is" without express or
   implied warranty.
- 
+
   KEVIN WORTH DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
   INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN
   NO EVENT SHALL KEVIN WORTH BE LIABLE FOR ANY SPECIAL, INDIRECT OR
@@ -65,7 +65,7 @@ examples/gtk/hangman.py:
   OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
   NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION
   WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- 
+
   Author: Kevin Worth <kevin@theworths.org>
 
      _________________________________________________________________
@@ -539,4 +539,3 @@ EXHIBIT A -Mozilla Public License.
      the notices in the Source Code files of the Original Code. You should
      use the text of this Exhibit A rather than the text found in the
      Original Code Source Code for Your Modifications.]
-
