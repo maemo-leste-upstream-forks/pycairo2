@@ -7,6 +7,8 @@ DEB_COMPRESS_EXCLUDE= .js .inv
 override_dh_auto_build:
 	dh_auto_build --buildsystem=pybuild
 	sphinx-build -bhtml docs debian/tmp-doc/html
+	# to fix lintian: privacy-breach-generic
+	sed -ir 's|src="https:[^"]*|src="|' debian/tmp-doc/html/index.html
 
 override_dh_auto_clean:
 	dh_auto_clean --buildsystem=pybuild
