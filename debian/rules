@@ -1,5 +1,4 @@
 #!/usr/bin/make -f
-DEB_COMPRESS_EXCLUDE= .js .inv
 
 %:
 	dh $@ --buildsystem=pybuild --with python2,python3,sphinxdoc
