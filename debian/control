@@ -13,6 +13,7 @@ Package: python-cairo
 Architecture: any
 Depends: ${shlibs:Depends}, ${python:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
+Multi-arch: same
 Description: Python bindings for the Cairo vector graphics library
  This package contains modules that allow you to use the Cairo vector
  graphics library in Python programs.
@@ -22,6 +23,7 @@ Section: debug
 Architecture: any
 Depends: python-cairo (= ${binary:Version}), python-dbg, ${shlibs:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
+Multi-arch: same
 Description: Python bindings for the Cairo vector graphics library (debug extension)
  This package contains modules that allow you to use the cairo vector
  graphics library in Python programs.
