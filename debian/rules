@@ -12,18 +12,18 @@ install/python-cairo-dev::
 
 build/python-cairo-dbg::
 	set -e; \
-	for i in $(cdbs_python_build_versions); do \
-	  python$$i-dbg ./setup.py build; \
+	for i in $(cdbs_python_flavors); do \
+	  $$i-dbg ./setup.py build; \
 	done
 
 install/python-cairo-dbg::
-	for i in $(cdbs_python_build_versions); do \
-	  python$$i-dbg ./setup.py install --install-layout=deb --root $(CURDIR)/debian/tmp; \
+	for i in $(cdbs_python_flavors); do \
+	  $$i-dbg ./setup.py install --install-layout=deb --root $(CURDIR)/debian/tmp; \
 	done
 
 clean::
-	-for i in $(cdbs_python_build_versions); do \
-	  python$$i-dbg ./setup.py clean -a; \
+	-for i in $(cdbs_python_flavors); do \
+	  $$i-dbg ./setup.py clean -a; \
 	done
 	rm -f $(CURDIR)/pycairo.pc $(CURDIR)/src/config.h
 	rm -rf $(CURDIR)/build
