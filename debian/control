@@ -32,7 +32,7 @@ Description: Python bindings for the Cairo vector graphics library (debug extens
 
 Package: python-cairo-dev
 Architecture: all
-Depends: python-cairo (>= ${binary:Version}), ${misc:Depends}, libjs-jquery
+Depends: python-cairo (>= ${binary:Version}), ${misc:Depends}, libjs-jquery, libjs-underscore
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).
