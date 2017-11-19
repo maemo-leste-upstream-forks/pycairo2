@@ -11,8 +11,9 @@ pycairo (1.15.4-1) UNRELEASED; urgency=medium
   * debian/watch: Update watch file, the project has been moved to github
   * Bump Standards-Version to 4.1.1 (no further changes)
   * Switch to dh sequences and bump debhelper compatibility to 10
+  * Add python-pytest to the build-dependencies, this is needed for the tests
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 11:55:29 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 12:03:09 +0100
 
 pycairo (1.8.8-2.2) unstable; urgency=medium
 
