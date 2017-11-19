@@ -1,5 +1,6 @@
-pycairo (1.15.4-1) UNRELEASED; urgency=medium
+pycairo (1.15.4-1) unstable; urgency=medium
 
+  * Team upload.
   [ Ondřej Nový ]
   * Fixed VCS URL (https)
 
@@ -20,7 +21,7 @@ pycairo (1.15.4-1) UNRELEASED; urgency=medium
   * debian/python-cairo-dev.links: Use libjs-underscore instead of embedded
     underscore.js file
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 13:15:15 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 13:31:30 +0100
 
 pycairo (1.8.8-2.2) unstable; urgency=medium
 
