@@ -13,7 +13,8 @@ Build-Depends: debhelper (>= 10),
                python3-all-dev,
                python3-pytest <!nocheck>,
                python3-sphinx,
-               python3-sphinx-rtd-theme
+               python3-sphinx-rtd-theme,
+               sphinx-common
 Standards-Version: 4.1.1
 Homepage: http://cairographics.org/pycairo/
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/pycairo.git
@@ -45,10 +46,9 @@ Description: Python bindings for the Cairo vector graphics library (debug extens
 
 Package: python-cairo-dev
 Architecture: all
-Depends: libjs-jquery,
-         libjs-underscore,
-         python-cairo (>= ${binary:Version}),
-         ${misc:Depends}
+Depends: python-cairo (>= ${binary:Version}),
+         ${misc:Depends},
+         ${sphinxdoc:Depends}
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).
@@ -88,7 +88,7 @@ Description: Python3 cairo bindings: development files
 Package: python3-cairo-doc
 Architecture: all
 Section: doc
-Depends: libjs-jquery, libjs-underscore, ${misc:Depends}, ${sphinxdoc:Depends}
+Depends: ${misc:Depends}, ${sphinxdoc:Depends}
 Description: Python 3 cairo bindings: documentation files
  Cairo is a multi-platform library providing anti-aliased vector-based
  rendering for multiple target backends.
