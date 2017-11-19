@@ -2,10 +2,10 @@
 f5ff9307528665dfc25c945125fe67e1a9b30d65
 f5ff9307528665dfc25c945125fe67e1a9b30d65
 f1b7f80838f8f6633a96d144419e2d1f07bbd419
-f1b7f80838f8f6633a96d144419e2d1f07bbd419
-pycairo_1.8.8.orig.tar.gz
-b127ed59bd876ca0fe5d0cf0f69735835c599e9b
-475651
+f415c4726d3216e9e83fbe36b729060beabcdf05
+pycairo_1.15.4.orig.tar.gz
+0053f0a9b44ec907d8cb76c4ac1878b3b7e97632
+179925
 debianTag="debian/%e%v"
 patchedTag="patched/%e%v"
 upstreamTag="upstream/%e%u"
