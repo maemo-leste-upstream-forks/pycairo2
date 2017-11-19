@@ -16,8 +16,9 @@ pycairo (1.15.4-1) UNRELEASED; urgency=medium
   * debian/control: Move python-cairo-dbg to priority optional from priority
     extra, the later is deprecated
   * debian/control: Mark python-cairo and python-cairo-dbg as Multi-arch: same
+  * debian/python-cairo.install: Install egg-info file (Closes: #572624)
 
- -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 12:27:18 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Sun, 19 Nov 2017 12:41:14 +0100
 
 pycairo (1.8.8-2.2) unstable; urgency=medium
 
