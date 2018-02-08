@@ -1,8 +1,12 @@
-pycairo (1.15.4-3) UNRELEASED; urgency=medium
+pycairo (1.16.2-1) UNRELEASED; urgency=medium
 
+  [ Ondřej Nový ]
   * d/control: Set Vcs-* to salsa.debian.org
 
- -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:12:43 +0100
+  [ Laurent Bigonville ]
+  * New upstream release
+
+ -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:03:37 +0100
 
 pycairo (1.15.4-2) unstable; urgency=medium
 
