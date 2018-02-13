@@ -17,8 +17,8 @@ Build-Depends: debhelper (>= 10),
                sphinx-common
 Standards-Version: 4.1.1
 Homepage: http://cairographics.org/pycairo/
-Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/pycairo.git
-Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/pycairo.git
+Vcs-Git: https://salsa.debian.org/python-team/modules/pycairo.git
+Vcs-Browser: https://salsa.debian.org/python-team/modules/pycairo
 
 Package: python-cairo
 Architecture: any
