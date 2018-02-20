@@ -26,6 +26,15 @@ Module Functions
    Returns the version of the underlying C cairo library as a human-readable
    string of the form "X.Y.Z".
 
+.. function:: get_include()
+
+    :returns: a path to the directory containing the C header files
+    :rtype: str
+
+    Gives the include path which should be passed to the compiler.
+
+    .. versionadded:: 1.16.0
+
 
 Module Constants
 ================
@@ -131,11 +140,15 @@ Other Classes and Functions
 
 .. class:: pathlike()
 
-    This type only exists for documentation purposes. It represents everything
-    Python allows as a filesystem path except on Windows where only ANSI paths
-    are supported. To use Unicode paths on Windows most functions take an
-    already open file object which you can create from a Unicode path and then
-    pass to pycairo instead.
+    This type only exists for documentation purposes.
+
+    On Unix it is equal to what Python allows as a filesystem path. On Windows
+    with cairo <=1.15.8 only ANSI paths are supported. With cairo >=1.15.10
+    all paths are supported as long as they don't contain surrogates.
+
+    Many functions taking a path also allow passing in an already open Python
+    file object. This can be used to support all Python filesystem paths
+    independent of the underlying platform or cairo version.
 
     .. versionadded:: 1.15.1
         Older versions only supported a subset of :obj:`str` paths
