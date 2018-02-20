@@ -1,10 +1,13 @@
 import pickle
 import re
+import platform
 
 import pytest
 import cairo
 
 
+# https://bitbucket.org/pypy/pypy/issues/2742
+@pytest.mark.skipif(platform.python_implementation() == "PyPy", reason="PyPy")
 def test_type():
     t = cairo.Antialias
     assert int in t.__mro__

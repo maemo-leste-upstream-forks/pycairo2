@@ -17,6 +17,13 @@ import cairo
 import pytest
 
 
+def test_get_include():
+    include = cairo.get_include()
+    assert isinstance(include, str)
+    assert os.path.exists(include)
+    assert os.path.isdir(include)
+
+
 def test_version():
     cairo.cairo_version()
     cairo.cairo_version_string()
@@ -260,6 +267,7 @@ def test_constants():
     assert cairo.SVG_VERSION_1_2 == 1
 
 
+@pytest.mark.skipif(not hasattr(sys, "getrefcount"), reason="PyPy")
 def test_surface_get_set_mime_data_references():
     surface = cairo.ImageSurface(cairo.FORMAT_RGB24, 1, 1)
     if sys.version_info[0] == 2:

@@ -6,11 +6,18 @@ import sys
 import os
 import errno
 
+if os.environ.get("PYCAIRO_SETUPTOOLS"):
+    # for testing
+    import setuptools
+    setuptools
+
 from distutils.core import Extension, setup, Command, Distribution
 from distutils.ccompiler import new_compiler
+from distutils import log
+from distutils import sysconfig
 
 
-PYCAIRO_VERSION = '1.15.4'
+PYCAIRO_VERSION = '1.16.2'
 CAIRO_VERSION_REQUIRED = '1.13.1'
 XPYB_VERSION_REQUIRED = '1.3'
 
@@ -49,25 +56,6 @@ def pkg_config_parse(opt, pkg):
     output = ret.decode()
     opt = opt[-2:]
     return [x.lstrip(opt) for x in output.split()]
-
-
-def write_config_file(path, version):
-    v = version.split('.')
-
-    with open(path, 'w') as fo:
-        fo.write("""\
-/* Configuration header created by setup.py - do not edit */
-#ifndef _CONFIG_H
-#define _CONFIG_H 1
-
-#define PYCAIRO_VERSION_MAJOR %s
-#define PYCAIRO_VERSION_MINOR %s
-#define PYCAIRO_VERSION_MICRO %s
-#define VERSION "%s"
-
-#endif /* _CONFIG_H */
-""" % (v[0], v[1], v[2], version)
-        )
 
 
 class test_cmd(Command):
@@ -110,7 +98,7 @@ class install_pkgconfig(Command):
 
     def finalize_options(self):
         self.set_undefined_options(
-            'install',
+            'install_lib',
             ('install_base', 'install_base'),
             ('install_data', 'install_data'),
         )
@@ -127,17 +115,38 @@ class install_pkgconfig(Command):
         return []
 
     def run(self):
-        if self.compiler_type == "msvc":
+        # https://github.com/pygobject/pycairo/issues/83
+        # The pkg-config file contains absolute paths depending on the
+        # prefix. pip uses wheels as cache and when installing with --user
+        # and then to a virtualenv, the wheel gets reused containing the
+        # wrong paths. So in case bdist_wheel is used, just skip this command.
+        cmd = self.distribution.get_command_obj("bdist_wheel", create=False)
+        if cmd is not None:
+            log.info(
+                "Skipping install_pkgconfig, not supported with bdist_wheel")
             return
 
-        pkgconfig_dir = os.path.join(self.install_data, "share", "pkgconfig")
+        # same for bdist_egg
+        cmd = self.distribution.get_command_obj("bdist_egg", create=False)
+        if cmd is not None:
+            log.info(
+                "Skipping install_pkgconfig, not supported with bdist_egg")
+            return
+
+        if self.compiler_type == "msvc":
+            log.info(
+                "Skipping install_pkgconfig, not supported with MSVC")
+            return
+
+        python_lib = sysconfig.get_python_lib(True, True, self.install_data)
+        pkgconfig_dir = os.path.join(os.path.dirname(python_lib), 'pkgconfig')
         self.mkpath(pkgconfig_dir)
 
-        if sys.version_info[0] == 3:
-            target = os.path.join(pkgconfig_dir, "py3cairo.pc")
-        else:
-            target = os.path.join(pkgconfig_dir, "pycairo.pc")
+        pcname = "py3cairo.pc" if sys.version_info[0] == 3 else "pycairo.pc"
+        target = os.path.join(pkgconfig_dir, pcname)
 
+        log.info("Writing %s" % target)
+        log.info("pkg-config prefix: %s" % self.install_base)
         with open(target, "wb") as h:
             h.write((u"""\
 prefix=%(prefix)s
@@ -156,14 +165,87 @@ Libs:
         self.outfiles.append(target)
 
 
-du_install = get_command_class("install")
+class install_pycairo_header(Command):
+    description = "install pycairo header"
+    user_options = []
+
+    def initialize_options(self):
+        self.install_data = None
+        self.install_lib = None
+        self.force = None
+        self.outfiles = []
+
+    def finalize_options(self):
+        self.set_undefined_options(
+            'install_lib',
+            ('install_data', 'install_data'),
+            ('install_lib', 'install_lib'),
+        )
+
+        self.set_undefined_options(
+            'install',
+            ('force', 'force'),
+        )
+
+    def get_outputs(self):
+        return self.outfiles
+
+    def get_inputs(self):
+        return [os.path.join('cairo', 'pycairo.h')]
+
+    def run(self):
+        # https://github.com/pygobject/pycairo/issues/92
+        # https://github.com/pygobject/pycairo/issues/98
+        hname = "py3cairo.h" if sys.version_info[0] == 3 else "pycairo.h"
+        source = self.get_inputs()[0]
+
+        # for things using get_include()
+        lib_hdir = os.path.join(self.install_lib, "cairo", "include")
+        self.mkpath(lib_hdir)
+        lib_header_path = os.path.join(lib_hdir, hname)
+        (out, _) = self.copy_file(source, lib_header_path)
+        self.outfiles.append(out)
+
+        cmd = self.distribution.get_command_obj("bdist_wheel", create=False)
+        if cmd is not None:
+            return
+        cmd = self.distribution.get_command_obj("bdist_egg", create=False)
+        if cmd is not None:
+            return
+
+        # for things using pkg-config
+        data_hdir = os.path.join(self.install_data, "include", "pycairo")
+        self.mkpath(data_hdir)
+        header_path = os.path.join(data_hdir, hname)
+        (out, _) = self.copy_file(source, header_path)
+        self.outfiles.append(out)
 
 
-class install(du_install):
+du_install_lib = get_command_class("install_lib")
 
-    sub_commands = du_install.sub_commands + [
-        ("install_pkgconfig", lambda self: True),
-    ]
+
+class install_lib(du_install_lib):
+
+    def initialize_options(self):
+        self.install_base = None
+        self.install_lib = None
+        self.install_data = None
+        du_install_lib.initialize_options(self)
+
+    def finalize_options(self):
+        du_install_lib.finalize_options(self)
+        self.set_undefined_options(
+            'install',
+            ('install_base', 'install_base'),
+            ('install_lib', 'install_lib'),
+            ('install_data', 'install_data'),
+        )
+
+    def run(self):
+        du_install_lib.run(self)
+        # bdist_egg doesn't run install, so run our commands here instead
+        self.run_command("install_pkgconfig")
+        self.run_command("install_pycairo_header")
 
 
 du_build_ext = get_command_class("build_ext")
@@ -256,10 +338,6 @@ class build_ext(du_build_ext):
             ext.library_dirs += pkg_config_parse('--libs-only-L', 'xpyb')
             ext.libraries += pkg_config_parse('--libs-only-l', 'xpyb')
 
-        script_dir = os.path.dirname(os.path.realpath(__file__))
-        target = os.path.join(script_dir, "cairo", "config.h")
-        write_config_file(target, PYCAIRO_VERSION)
-
         du_build_ext.run(self)
 
 
@@ -279,18 +357,6 @@ class build(du_build):
     def finalize_options(self):
         du_build.finalize_options(self)
         self.enable_xpyb = bool(self.enable_xpyb)
-
-
-du_install_data = get_command_class("install_data")
-
-
-class install_data(du_install_data):
-
-    def copy_file(self, src, dst, *args, **kwargs):
-        # XXX: rename target on the fly. ugly, but works
-        if os.path.basename(src) == "pycairo.h" and sys.version_info[0] == 3:
-            dst = os.path.join(dst, "py3cairo.h")
-        return du_install_data.copy_file(self, src, dst, *args, **kwargs)
 
 
 def main():
@@ -316,10 +382,29 @@ def main():
             'cairo/textcluster.c',
             'cairo/textextents.c',
         ],
+        depends=[
+            'cairo/compat.h',
+            'cairo/private.h',
+            'cairo/pycairo.h',
+        ],
+        define_macros=[
+            ("PYCAIRO_VERSION_MAJOR", PYCAIRO_VERSION.split('.')[0]),
+            ("PYCAIRO_VERSION_MINOR", PYCAIRO_VERSION.split('.')[1]),
+            ("PYCAIRO_VERSION_MICRO", PYCAIRO_VERSION.split('.')[2]),
+        ],
     )
 
     with io.open('README.rst', encoding="utf-8") as h:
         long_description = h.read()
+
+    cmdclass = {
+        "build": build,
+        "build_ext": build_ext,
+        "install_lib": install_lib,
+        "install_pkgconfig": install_pkgconfig,
+        "install_pycairo_header": install_pycairo_header,
+        "test": test_cmd,
+    }
 
     setup(
         name="pycairo",
@@ -345,17 +430,7 @@ def main():
              'GNU Lesser General Public License v2 (LGPLv2)'),
             'License :: OSI Approved :: Mozilla Public License 1.1 (MPL 1.1)',
         ],
-        data_files=[
-            ('include/pycairo', ['cairo/pycairo.h']),
-        ],
-        cmdclass={
-            "build": build,
-            "build_ext": build_ext,
-            "install": install,
-            "install_pkgconfig": install_pkgconfig,
-            "install_data": install_data,
-            "test": test_cmd,
-        },
+        cmdclass=cmdclass,
     )
 
 
