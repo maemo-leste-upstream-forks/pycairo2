@@ -12,8 +12,10 @@ pycairo (1.16.2-1) UNRELEASED; urgency=medium
     Upstream buildsystem now installs the .pc files in /usr/lib/pkgconfig
   * debian/python-cairo-dev.install, debian/python3-cairo-dev.install: Install
     new .h file shipped by upstream
+  * Override the lintian python-package-missing-depends-on-python error for
+    -dev packages, the package is only installing a header file in the path
 
- -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:12:54 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:30:03 +0100
 
 pycairo (1.15.4-2) unstable; urgency=medium
 
