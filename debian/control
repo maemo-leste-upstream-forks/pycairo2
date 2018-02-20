@@ -49,6 +49,7 @@ Architecture: all
 Depends: python-cairo (>= ${binary:Version}),
          ${misc:Depends},
          ${sphinxdoc:Depends}
+Built-Using: ${sphinxdoc:Built-Using}
 Description: Python cairo bindings: development files
  This package contains files that allow you to compile wrappers
  that interoperate with python-cairo (pycairo).
@@ -89,6 +90,7 @@ Package: python3-cairo-doc
 Architecture: all
 Section: doc
 Depends: ${misc:Depends}, ${sphinxdoc:Depends}
+Built-Using: ${sphinxdoc:Built-Using}
 Description: Python 3 cairo bindings: documentation files
  Cairo is a multi-platform library providing anti-aliased vector-based
  rendering for multiple target backends.
