@@ -5,8 +5,9 @@ pycairo (1.16.2-1) UNRELEASED; urgency=medium
 
   [ Laurent Bigonville ]
   * New upstream release
+  * debian/control: Bump Standards-Version to 4.1.3 (no further changes)
 
- -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:03:37 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:04:09 +0100
 
 pycairo (1.15.4-2) unstable; urgency=medium
 
