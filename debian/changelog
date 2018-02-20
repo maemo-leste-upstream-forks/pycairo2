@@ -1,5 +1,6 @@
-pycairo (1.16.2-1) UNRELEASED; urgency=medium
+pycairo (1.16.2-1) unstable; urgency=medium
 
+  * Team upload.
   [ Ondřej Nový ]
   * d/control: Set Vcs-* to salsa.debian.org
 
@@ -15,7 +16,7 @@ pycairo (1.16.2-1) UNRELEASED; urgency=medium
   * Override the lintian python-package-missing-depends-on-python error for
     -dev packages, the package is only installing a header file in the path
 
- -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:30:03 +0100
+ -- Laurent Bigonville <bigon@debian.org>  Tue, 20 Feb 2018 16:34:35 +0100
 
 pycairo (1.15.4-2) unstable; urgency=medium
 
